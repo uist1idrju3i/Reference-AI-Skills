@@ -7,9 +7,11 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 
 SCRIPT = Path(__file__).resolve().parents[2] / ".github/scripts/check-skills.py"
+sys.path.insert(0, str(SCRIPT.parent))
 SPEC = importlib.util.spec_from_file_location("check_skills", SCRIPT)
 CHECK = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(CHECK)
@@ -28,7 +30,7 @@ class SkillsTest(unittest.TestCase):
         self.mirror = self.root / ".claude/skills/example"
         self.mirror.symlink_to("../../.agents/skills/example")
         self.config = ('[submodule "vendor/upstream"]\n\tpath = vendor/upstream\n'
-                       '\turl = https://github.com/example/upstream.git\n\tshallow = true\n')
+                       '\turl = https://github.com/example/upstream.git\n\tshallow = true\n\tbranch = main\n')
         (self.root / ".gitmodules").write_text(self.config, encoding="utf-8")
         self.table = ("## スキル一覧\n\n| スキル | 種類 | 使う場面 |\n|---|---|---|\n"
                       "| [`example`](.agents/skills/example/SKILL.md) | 自作 | 例 |\n")
@@ -57,6 +59,10 @@ class SkillsTest(unittest.TestCase):
     def test_valid_vendor(self):
         self.external()
         self.assertEqual([], self.errors())
+
+    def test_revision_drift_fails_skill_check(self):
+        with patch.object(CHECK, "verify_revisions", side_effect=ValueError("gitlink mismatch")):
+            self.assertTrue(any("gitlink mismatch" in error for error in self.errors()))
 
     def test_folded_literal_and_quoted_descriptions(self):
         for value in ('>\n  First line\n  second line', '|-\n  Description',
@@ -128,6 +134,17 @@ class SkillsTest(unittest.TestCase):
             with self.subTest(value=value):
                 self.write_skill(self.content.replace("Example skill", value))
                 self.assertTrue(self.errors())
+
+    def test_unquoted_yaml_numbers_booleans_and_nulls(self):
+        for value in ('123', '0', '-42', '+12', '1.5', '.5', '12.', '1e3', '-2e-4',
+                      '1_000', '0xFF', '0o77', '0b10', '0123', '.inf', '-.Inf', '.NaN',
+                      '1:20', 'true', 'FALSE', 'yes', 'No', 'on', 'OFF', 'null', 'NULL', '~'):
+            with self.subTest(value=value):
+                self.write_skill(self.content.replace('Example skill', value))
+                self.assertTrue(self.errors())
+                self.assertTrue(CHECK.metadata(f'---\nname: {value}\ndescription: valid\n---\n', value))
+                self.assertEqual([], CHECK.metadata(f'---\nname: "{value}"\ndescription: "{value}"\n---\n', value))
+                self.assertEqual([], CHECK.metadata(f"---\nname: '{value}'\ndescription: '{value}'\n---\n", value))
 
     def test_kebab_case(self):
         self.skill.rename(self.skill.with_name("Bad_name"))

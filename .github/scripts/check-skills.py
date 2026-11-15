@@ -10,8 +10,13 @@ import os
 from pathlib import Path, PurePosixPath
 import re
 
+from vendor_revisions import verify_revisions
+
 
 NAME = r"[a-z0-9]+(?:-[a-z0-9]+)*"
+YAML_NUMBER = re.compile(
+    r"[-+]?(?:0[box][0-9a-f_]+|(?:\d[\d_]*(?:\.[\d_]*)?|\.[\d_]+)(?:e[-+]?\d+)?"
+    r"|\.(?:inf|nan)|\d[\d_]*(?::[0-5]?\d)+(?:\.[\d_]*)?)", re.IGNORECASE)
 
 
 def scalar(value: str, continuation: list[str]) -> str:
@@ -32,7 +37,8 @@ def scalar(value: str, continuation: list[str]) -> str:
     value = re.split(r"\s+#", value, maxsplit=1)[0].strip()
     if re.fullmatch(r"[>|][+-]?", value):
         return " ".join(line.strip() for line in continuation).strip()
-    if value.lower() in ("null", "~", "true", "false") or value.startswith(("[", "{")):
+    if (value.lower() in ("null", "~", "true", "false", "yes", "no", "on", "off")
+            or YAML_NUMBER.fullmatch(value) or value.startswith(("[", "{"))):
         raise ValueError("文字列ではありません")
     return value
 
@@ -134,6 +140,10 @@ def inventory_table(text: str, kinds: dict[str, str]) -> list[str]:
 
 def check(root: Path) -> list[str]:
     errors, modules = submodules(root)
+    try:
+        verify_revisions(root)
+    except ValueError as error:
+        errors.append(f"vendor固定版: {error}")
     agents, claude = root / ".agents/skills", root / ".claude/skills"
     if (not agents.is_dir() or agents.is_symlink()
             or not claude.is_dir() or claude.is_symlink()):
