@@ -1,0 +1,289 @@
+{
+  "copyright": "Copyright 2015-2018 Philip Koopman, Carnegie Mellon University, CC BY 4.0 (http://creativecommons.org/licenses/by/4.0/)",
+  "modification": "HTML reformatted; no values computed.",
+  "retrieved": "2026-11-15",
+  "sources": {
+    "index.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/index.html",
+      "sha256": "fce7b8abc6926a5f7504c695fe60e2dd5124cf8f166ec745303a5fffc98c588b",
+      "entries": 388,
+      "raw_entries": 388
+    },
+    "crc3.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc3.html",
+      "sha256": "dae1e67b8cb1df05ec46aca7c1b06eed686d850c9a549a7f86d28381204c057b",
+      "entries": 2,
+      "raw_entries": 2
+    },
+    "crc4.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc4.html",
+      "sha256": "57b13f52fe310dae42c8accd295b10820d6034aa72f20f6c232942920071f72e",
+      "entries": 4,
+      "raw_entries": 4
+    },
+    "crc5.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc5.html",
+      "sha256": "526acf07ccf9410e7515e6acbf6d73017eda3dc014c047cc4f41e23d9c12828a",
+      "entries": 3,
+      "raw_entries": 3
+    },
+    "crc6.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc6.html",
+      "sha256": "8205f923bd429ed90d805b5f5df2a5d113663ec8b8c65947cb3d0d9520d34801",
+      "entries": 6,
+      "raw_entries": 6
+    },
+    "crc7.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc7.html",
+      "sha256": "3cb9a9d3abaaa472dc6d32256705065c769ecfd4d17ffd7ae87fed4b8500b77a",
+      "entries": 11,
+      "raw_entries": 11
+    },
+    "crc8.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc8.html",
+      "sha256": "b3eadbefe30c6cdf94d8e66a34658e59367b15d314cc35b943bf9f94039c52a9",
+      "entries": 17,
+      "raw_entries": 17
+    },
+    "crc9.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc9.html",
+      "sha256": "7e3922fb74e99a418a282e7df04db3746885ca7707f59c2b72531ba33f809c6f",
+      "entries": 16,
+      "raw_entries": 16
+    },
+    "crc10.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc10.html",
+      "sha256": "1c3ee5125f52d7be347dd8377210b466ceecd991d35bdc9a51970345af836a73",
+      "entries": 16,
+      "raw_entries": 16
+    },
+    "crc11.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc11.html",
+      "sha256": "ef37149e259fe6a859429225a1b656a42201b0251a2eb6c0c35c23d2d7575954",
+      "entries": 17,
+      "raw_entries": 17
+    },
+    "crc12.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc12.html",
+      "sha256": "ba005f357cb4374ed137691bcf69a9acf0f998770474266b88abc08693e8d961",
+      "entries": 22,
+      "raw_entries": 22
+    },
+    "crc13.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc13.html",
+      "sha256": "9aa79eb836605b7ea1f30beb48f4651747bdddfe3a408c391af6a9cfbc5de33a",
+      "entries": 21,
+      "raw_entries": 21
+    },
+    "crc14.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc14.html",
+      "sha256": "75c04d53fa11bd85fcb8bc91f4397a0f99a87d7bcec622457af3986f324fb5ca",
+      "entries": 25,
+      "raw_entries": 25
+    },
+    "crc15.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc15.html",
+      "sha256": "1423106a79f341273356a6d1e3f977ab609476bbcf658c145653629cc63542ab",
+      "entries": 25,
+      "raw_entries": 25
+    },
+    "crc16.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc16.html",
+      "sha256": "a490feaa6326a6123216c530acd0bcb7a4e7bbc5436346ef3564e4b7ac74c9db",
+      "entries": 43,
+      "raw_entries": 43
+    },
+    "crc17.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc17.html",
+      "sha256": "d03ef56904a4b7a83ae74a712f754d8440002e1338df82a724dd3f2c618eed6b",
+      "entries": 16,
+      "raw_entries": 16
+    },
+    "crc18.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc18.html",
+      "sha256": "5870977834a31a684724018d094deb6d4573ca98623874f19d9cba4093f4a7fe",
+      "entries": 17,
+      "raw_entries": 17
+    },
+    "crc19.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc19.html",
+      "sha256": "64d6453f62f91d5ddabdb2d281b3c0382754ea0bf4cd0b3061cf1a3ca4151eee",
+      "entries": 17,
+      "raw_entries": 17
+    },
+    "crc20.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc20.html",
+      "sha256": "6d148493b90db7f16d896de5cafccacbb221e9f5e9e29533f276d6d6adf733b7",
+      "entries": 20,
+      "raw_entries": 20
+    },
+    "crc21.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc21.html",
+      "sha256": "199cc635499992007f900343fd8a583d3cd8a03e620acb89442c7f824c2184ee",
+      "entries": 19,
+      "raw_entries": 19
+    },
+    "crc22.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc22.html",
+      "sha256": "db775312359a813fdf0b8020f281b783ab305c57892ce53e2e3b3a1fa6c5c6ce",
+      "entries": 22,
+      "raw_entries": 22
+    },
+    "crc23.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc23.html",
+      "sha256": "80a3ae51242b2454ccc8fec6ed26880f9687997501c89c2d6240f055223889cd",
+      "entries": 19,
+      "raw_entries": 19
+    },
+    "crc24.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc24.html",
+      "sha256": "f69d057a34f85691c9327f88f0d65ae863046e64ca4821d3b942fca929a94d0c",
+      "entries": 31,
+      "raw_entries": 31
+    },
+    "crc25.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc25.html",
+      "sha256": "be056837833470bfba8d087c8db31194ab4aca7aebf685f17253f41da072c45f",
+      "entries": 23,
+      "raw_entries": 23
+    },
+    "crc26.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc26.html",
+      "sha256": "8d68eee61e1b21d6601570a1e26bed8e9e48d103fa43ceb1b22d2b103fe3d800",
+      "entries": 26,
+      "raw_entries": 26
+    },
+    "crc27.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc27.html",
+      "sha256": "9a482bb38d8768a9e1717403e51719ddb23a25eb8b0d5ba32c243372d9d1b7e4",
+      "entries": 26,
+      "raw_entries": 26
+    },
+    "crc28.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc28.html",
+      "sha256": "6411c6a13620f5cba7bb867b5c5228df855155fed4f479e581bdd2950647a4cc",
+      "entries": 25,
+      "raw_entries": 25
+    },
+    "crc29.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc29.html",
+      "sha256": "9ee3b0f2196f9a0590fe7066ae1b65fd1d90e0456bddab44e7609e9173e464de",
+      "entries": 25,
+      "raw_entries": 25
+    },
+    "crc30.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc30.html",
+      "sha256": "cdccbf273fbb4461b00fe57bfccfb72cd509d87166c6b04b1ce14425981effc9",
+      "entries": 31,
+      "raw_entries": 31
+    },
+    "crc31.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc31.html",
+      "sha256": "d8255f0cadf6ebe2b6273182b97c8cfc1ec398822502378ddd4673cc10134023",
+      "entries": 32,
+      "raw_entries": 32
+    },
+    "crc32.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc32.html",
+      "sha256": "079e3bc9fe2fd3fe75cebcde0ec0fdda4c545b7b2f3952f37f33248a3d2fd57b",
+      "entries": 48,
+      "raw_entries": 48
+    },
+    "crc36.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc36.html",
+      "sha256": "a700bbb8215d1ab8de96d33dd64737ee408ba0fe8f3ed28e140dd6860080cd86",
+      "entries": 12,
+      "raw_entries": 12
+    },
+    "crc40.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc40.html",
+      "sha256": "a0259ea380048d50ab1a1c158b46f23ceaadf3fc06ce2e6ae6fccc4776190d84",
+      "entries": 12,
+      "raw_entries": 12
+    },
+    "crc44.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc44.html",
+      "sha256": "92e8804953b62968c2a884f80b3e34fcf7829cb3d34014bdbb8f3dc64da3919f",
+      "entries": 9,
+      "raw_entries": 9
+    },
+    "crc48.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc48.html",
+      "sha256": "ad794f1fafeb8b693115c139a7bf76615078dd177452e09c971aa1174e2646f9",
+      "entries": 9,
+      "raw_entries": 9
+    },
+    "crc52.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc52.html",
+      "sha256": "448ebe79cc48d065180d97358f44c4accb7ca20b534bb6a257a8e78fd1c3683f",
+      "entries": 8,
+      "raw_entries": 8
+    },
+    "crc56.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc56.html",
+      "sha256": "9a3798aefbed8f6b2340e54df9d059f10babc2de1968a49aabe033c8ea9b627d",
+      "entries": 7,
+      "raw_entries": 7
+    },
+    "crc60.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc60.html",
+      "sha256": "ed45aaf117c7aaeac4f2b5c1b9f15a59a9a9b1805b0fa477bafc93ced0b4b8fc",
+      "entries": 4,
+      "raw_entries": 4
+    },
+    "crc63.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc63.html",
+      "sha256": "f9cc7f45f078d147590791e1cf4b1818b584c8f45a77b5f37a968f155134a579",
+      "entries": 0,
+      "raw_entries": 0
+    },
+    "crc64.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/crc64.html",
+      "sha256": "674bf5d6317f14141342bffd9a6aed16ca8e854fa60d6486043e82181cc92b6c",
+      "entries": 5,
+      "raw_entries": 5
+    },
+    "hd3.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/hd3.html",
+      "sha256": "6becf6f9fe96226eb654342e4eb4d0cf9c5cd785ac27a01d0f9b1117def67a5e",
+      "entries": 219,
+      "raw_entries": 219
+    },
+    "hd4.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/hd4.html",
+      "sha256": "da933d6db4988aa493985536c9baaec8f34a83c737f9f55d8a211ee1a039d727",
+      "entries": 28,
+      "raw_entries": 28
+    },
+    "hd5.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/hd5.html",
+      "sha256": "3e6cfae9bd5b742a707bc3b9aab414098f8a31dabdc547b9b6c4515b591a6869",
+      "entries": 26,
+      "raw_entries": 26
+    },
+    "hd6.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/hd6.html",
+      "sha256": "ab95f63922d70e666acf9a06bf97d53ce7951dd00d3acbb8bc8417675e635d89",
+      "entries": 25,
+      "raw_entries": 25
+    },
+    "6sub8.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/6sub8.html",
+      "sha256": "78d0969792c40de1c68827a7a0c4168c57bd2a7982e570212d40198b9732983a",
+      "entries": 35,
+      "raw_entries": 35
+    },
+    "details.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/details.html",
+      "sha256": "35dc1b71604a719864ec4b9e9cca6736c688f5d5d291ea0fe71d6db9f49703a0",
+      "entries": 0,
+      "raw_entries": 0
+    },
+    "notes.html": {
+      "url": "https://users.ece.cmu.edu/~koopman/crc/notes.html",
+      "sha256": "8102a18f26daf6585317912f6d15dbcead58a72b0010075860fbbb9e86fd2531",
+      "entries": 0,
+      "raw_entries": 0
+    }
+  }
+}

@@ -16,13 +16,13 @@
   "pages": [
     {
       "title": "何を再利用できるテンプレートか",
-      "purpose": "テンプレートの目的、構成、38スキルの内訳と入口を示す。",
+      "purpose": "テンプレートの目的、構成、39スキルの内訳と入口を示す。",
       "page_notes": [
         {
           "content": "README.mdの冒頭はAGENTS.md・スキル・CI・Dependabot・DeepWikiを別のリポジトリへ導入するテンプレートと説明している。アプリケーション製品の実装を提供するリポジトリではない。"
         },
         {
-          "content": "README.mdの「スキル一覧」には自作10件と外部28件があり、スキル名・種類・出典と固定版・ライセンス・使う場面を同じ表で確認できる。"
+          "content": "README.mdの「スキル一覧」には自作11件と外部28件があり、スキル名・種類・出典と固定版・ライセンス・使う場面を同じ表で確認できる。"
         },
         {
           "content": "README.mdにはAsk DeepWikiバッジとディレクトリ構成図がある。DeepWiki設定は.devin/wiki.json、検査スクリプトは.github/scripts/、自動実行の定義は.github/workflows/にある。"
@@ -232,7 +232,7 @@
           "content": ".agents/skills/mfg-improvement-frameworks/SKILL.mdは資料作成前に数値骨格をassets/skeleton-example.ymlの様式へ記入し、assets/check_numbers.pyで照合する。図表の数値は推測で補わない。"
         },
         {
-          "content": ".agents/skills/mfg-improvement-frameworks/SKILL.mdはExcel操作をanthropic-skills:xlsx、スライドの体裁をslider-craftへ分担する。これらはREADME.mdの導入済み38スキルには含まれず、製造スキルだけで操作環境まで整うわけではない。"
+          "content": ".agents/skills/mfg-improvement-frameworks/SKILL.mdはExcel操作をanthropic-skills:xlsx、スライドの体裁をslider-craftへ分担する。これらはREADME.mdの導入済み39スキルには含まれず、製造スキルだけで操作環境まで整うわけではない。"
         }
       ]
     },
@@ -269,18 +269,18 @@
       ]
     },
     {
-      "title": "CI作成と依存更新の前に何を調べるか",
-      "purpose": "自作スキルによる依存バージョンの確認、性能設計、変更履歴と採否の手順を示す。",
+      "title": "CI・依存・CRCの選定前に何を調べるか",
+      "purpose": "自作スキルによる最新バージョンとCRC特性の確認、性能設計、変更履歴と採否の手順を示す。",
       "parent": "スキルの正本とリンクはどこにあるか",
       "page_notes": [
         {
           "content": ".agents/skills/github-actions-ci/SKILL.mdはCI/CD作成前に一次資料で最新安定版とrunnerを確認し、キャッシュや並列化で速度を最適化する。"
         },
         {
-          "content": ".agents/skills/vendor-update/SKILL.mdは更新範囲の変更履歴を深く読み、回帰の有無と、このリポジトリで役立つ新機能を確認する。"
+          "content": ".agents/skills/vendor-update/SKILL.mdは更新範囲の変更履歴を深く読み、回帰の有無と、このリポジトリで役立つ新機能を確認する。.agents/skills/vendor-update/SKILL.mdは版・出所・ライセンス・互換性を調べて採否と検証計画を示す。Dependabotが作ったPRも人手の更新と同じ確認対象である。"
         },
         {
-          "content": ".agents/skills/vendor-update/SKILL.mdは版・出所・ライセンス・互換性を調べて採否と検証計画を示す。Dependabotが作ったPRも人手の更新と同じ確認対象である。"
+          "content": ".agents/skills/crc-polynomial/SKILL.mdはdataword長・要求HD・誤りモデルを決め、KoopmanのBest・Selection・Zooで候補と表記を確認する。references/は出典・取得日・CC BY 4.0表示付きの引用表で、scripts/fetch_koopman.pyは再生成とオンライン・保存HTMLの一致検査を行う。tests/crc-polynomial/は全形式・件数・負例をネットワークなしで検査する。未確定値と原文の表記異常は補正せず、実装は既知ベクトルで検証する。"
         }
       ]
     },
@@ -449,7 +449,7 @@
     },
     {
       "title": "正常系と負例はどのテストで確かめるか",
-      "purpose": "三つのunittest群と境界・異常・通信失敗の検査対象を示す。",
+      "purpose": "四つのunittest群と境界・異常・通信失敗の検査対象を示す。",
       "parent": "PRとmainではどの検査が並列実行されるか",
       "page_notes": [
         {
