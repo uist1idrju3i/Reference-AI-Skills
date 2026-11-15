@@ -53,7 +53,9 @@ class Document(HTMLParser):
         self.row = None
         self.cell = None
         self.blocks = []
+        self.prose_blocks = []
         self.active = []
+        self.prose_active = []
         self.text_parts = []
         self.width = ""
         self.feed(source)
@@ -62,6 +64,8 @@ class Document(HTMLParser):
             raise ValueError("Unclosed table or text block")
 
     def handle_starttag(self, tag, attrs):
+        if tag != "sup":
+            self.prose_boundary()
         if tag == "table":
             if self.table is not None:
                 raise ValueError("Nested table")
@@ -76,6 +80,7 @@ class Document(HTMLParser):
             self.cell = []
         elif tag in ("p", "li", "h1", "h2", "h3"):
             self.active.append((tag, [], self.width))
+            self.prose_active.append([])
         elif tag == "br":
             self.handle_data(" ")
         elif tag == "sup":
@@ -83,10 +88,17 @@ class Document(HTMLParser):
 
     def handle_data(self, data):
         self.text_parts.append(data)
+        for parts in self.prose_active:
+            parts.append(data)
         if self.cell is not None:
             self.cell.append(data)
         for _, parts, _ in self.active:
             parts.append(data)
+
+    def prose_boundary(self):
+        self.text_parts.append(" ")
+        for parts in self.prose_active:
+            parts.append(" ")
 
     def handle_endtag(self, tag):
         if tag == "sup":
@@ -112,9 +124,13 @@ class Document(HTMLParser):
             kind, parts, width = self.active.pop()
             value = plain("".join(parts))
             self.blocks.append((kind, value, width))
+            prose = plain("".join(self.prose_active.pop()))
+            self.prose_blocks.append((kind, prose, width))
             match = re.match(r"(\d+)\s*-?\s*Bit CRCs", value, re.I)
             if kind in ("h2", "h3") and match:
                 self.width = match[1]
+        if tag != "sup":
+            self.prose_boundary()
 
 
 def raw_count(source, kind):
@@ -232,7 +248,7 @@ def markdown_table(headers, rows, url):
 def header(title, names, retrieved, documents):
     notices = []
     for name in names:
-        for kind, value, _ in documents[name].blocks:
+        for kind, value, _ in documents[name].prose_blocks:
             if kind == "p" and "copyright" in value.lower():
                 notices.append(f"> {name}: {value}")
     return (f"# {title}\n\n" + "\n".join(f"Source: {BASE + n}" for n in names)
@@ -260,7 +276,7 @@ def generate(sources, retrieved):
     body = header("Best CRCs: all HD cells, 3–32 bits", ["index.html"], retrieved, documents)
     body += "HD=2 cells publish only a polynomial, not a maximum length. Empty cells remain —; no missing value is inferred. Lengths are dataword bits, not codeword bits.\n\n"
     body += markdown_table(["CRC bits", "HD", "Maximum dataword length / implicit +1 polynomial / marker"], rows, BASE + "index.html")
-    for kind, value, _ in doc.blocks:
+    for kind, value, _ in doc.prose_blocks:
         if (kind == "p" and ("(**)" in value or "minimum dataword" in value.lower() or "assumption" in value)
                 or kind == "li" and value.startswith(("*p -", "*o -", "*op -", "** -"))):
             body += "\n> " + value + "\n"
@@ -284,7 +300,7 @@ def generate(sources, retrieved):
             headers.append("Secondary property")
         headers += ["Polynomial (implicit; explicit)", "Nickname / attributes", "HD lengths"]
         body = header("Selection: " + name, [name], retrieved, documents)
-        for kind, value, _ in documents[name].blocks:
+        for kind, value, _ in documents[name].prose_blocks:
             if kind in ("li", "p") and "copyright" not in value.lower() and "licensed" not in value.lower() and "updated" not in value.lower():
                 body += "> " + value + "\n\n"
         anomalies = [[cell] for row in rows for cell in row if cell in PUBLISHED_ANOMALIES.get(name, set())]

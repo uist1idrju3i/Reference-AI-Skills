@@ -2,10 +2,12 @@
 
 from contextlib import redirect_stdout, redirect_stderr
 import copy
+from html import unescape
 import importlib.util
 import io
 import json
 from pathlib import Path
+import re
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -59,6 +61,44 @@ class KoopmanTest(unittest.TestCase):
         self.assertIn(["3", "HD=4", ""], rows)
         self.assertIn(["3", "HD=2", "0x5"], rows)
         self.assertIn("temporary result", self.files["best-crcs.md"])
+
+    def test_prose_boundaries_preserve_words_without_changing_data(self):
+        source = ("<P>BER<B>such</B>as<A>Wikipedia</A>for<BR>reference"
+                  "<I></I>text &amp; 1/2<SUP>k</SUP>.</P>"
+                  "<TABLE><TR><TD>{<B>247</B>,15,6}</TD></TR></TABLE>")
+        doc = CRC.Document(source)
+        self.assertEqual([("p", "BER such as Wikipedia for reference text & 1/2<sup>k</sup>.", "")],
+                         doc.prose_blocks)
+        self.assertEqual([[["{247,15,6}"]]], doc.tables)
+        self.assertIn("random independent BER such as", self.files["best-crcs.md"])
+        self.assertNotIn("BERsuch", self.files["best-crcs.md"])
+        self.assertIn("Wikipedia for", self.files["notes.md"])
+
+    def test_all_prose_matches_source_with_tags_replaced_by_spaces(self):
+        def spaced(source):
+            return CRC.plain(unescape(re.sub(r"<!--.*?-->|<[^>]*>", " ", source, flags=re.S)))
+
+        for name, data in self.sources.items():
+            with self.subTest(source=name):
+                source = data.decode()
+                masked = re.sub(r"<!--.*?-->", lambda m: " " * len(m[0]), source, flags=re.S)
+                stack, expected = [], []
+                for match in re.finditer(r"<(/?)(p|li|h[123])\b[^>]*>", masked, re.I):
+                    tag = match[2].lower()
+                    if not match[1]:
+                        stack.append((tag, match.start()))
+                    else:
+                        kind, start = stack.pop()
+                        self.assertEqual(kind, tag)
+                        expected.append((kind, spaced(source[start:match.end()])))
+                self.assertEqual([], stack)
+                doc = CRC.Document(source)
+                actual = [(kind, CRC.plain(re.sub(r"</?sup>", " ", text)))
+                          for kind, text, _ in doc.prose_blocks]
+                self.assertEqual(expected, actual)
+                if name in ("notes.html", "details.html"):
+                    self.assertEqual(spaced(source),
+                                     CRC.plain(re.sub(r"</?sup>", " ", "".join(doc.text_parts))))
 
     def test_zoo_all_forms_attributes_and_brackets(self):
         doc, source = self.document("crc8.html")

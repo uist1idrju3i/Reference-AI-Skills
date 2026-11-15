@@ -8,7 +8,7 @@ Copyright 2015-2018 Philip Koopman, Carnegie Mellon University, CC BY 4.0 (http:
 
 Modification: HTML was reformatted into Markdown tables; layout whitespace and visual styling were normalized. Values were not calculated or completed. — means not supplied in the source.
 
-> index.html: These are the "Best" general-purpose CRC polynomials with specific Hamming Distance Properties. (See also: Notation and copyright statement). IMPORTANT NOTE: These are "BEST" polynomials under an assumption of a low, constant random independent BERsuch as you'd find in communication networks. If you have a BER that is higher than, say, 1 bit in 100,000, or is non-constant, or is non-random/non-independent, then you need to understand more before using these polynomials.
+> index.html: These are the "Best" general-purpose CRC polynomials with specific Hamming Distance Properties. (See also: Notation and copyright statement). IMPORTANT NOTE: These are "BEST" polynomials under an assumption of a low, constant random independent BER such as you'd find in communication networks. If you have a BER that is higher than, say, 1 bit in 100,000, or is non-constant, or is non-random/non-independent, then you need to understand more before using these polynomials.
 > index.html: This web page and all data files are Copyrighted 2015-2018 by Philip Koopman, Carnegie Mellon University.
 
 HD=2 cells publish only a polynomial, not a maximum length. Empty cells remain —; no missing value is inferred. Lengths are dataword bits, not codeword bits.
@@ -404,7 +404,7 @@ HD=2 cells publish only a polynomial, not a maximum length. Empty cells remain �
 | 31 | HD=19 | — | https://users.ece.cmu.edu/~koopman/crc/index.html |
 | 32 | HD=19 | — | https://users.ece.cmu.edu/~koopman/crc/index.html |
 
-> These are the "Best" general-purpose CRC polynomials with specific Hamming Distance Properties. (See also: Notation and copyright statement). IMPORTANT NOTE: These are "BEST" polynomials under an assumption of a low, constant random independent BERsuch as you'd find in communication networks. If you have a BER that is higher than, say, 1 bit in 100,000, or is non-constant, or is non-random/non-independent, then you need to understand more before using these polynomials.
+> These are the "Best" general-purpose CRC polynomials with specific Hamming Distance Properties. (See also: Notation and copyright statement). IMPORTANT NOTE: These are "BEST" polynomials under an assumption of a low, constant random independent BER such as you'd find in communication networks. If you have a BER that is higher than, say, 1 bit in 100,000, or is non-constant, or is non-random/non-independent, then you need to understand more before using these polynomials.
 
 > (**) means that this is a temporary result which has approximately the longest possible dataword length at the specified HD, but might not be the "best" possible value. (For example, probably there is some as yet unknown result with a slightly longer dataword length at that HD or with lower weights at the same HD.) Ongoing computations will be used to update this value to the "best" value when available. In the meantime, there's nothing wrong with using this polynomial as long as it provides adequate properties for your application.
 

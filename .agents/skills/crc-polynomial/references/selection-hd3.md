@@ -8,7 +8,7 @@ Copyright 2015-2018 Philip Koopman, Carnegie Mellon University, CC BY 4.0 (http:
 
 Modification: HTML was reformatted into Markdown tables; layout whitespace and visual styling were normalized. Values were not calculated or completed. — means not supplied in the source.
 
-> hd3.html: This work is copyright 2015-2017 by Philip Koopman. Licensed under a Creative Commons Attribution 4.0 International License.
+> hd3.html: This work is copyright 2015-2017 by Philip Koopman. Licensed under a Creative Commons Attribution 4.0 International License .
 
 > Philip Koopman, Carnegie Mellon University
 
