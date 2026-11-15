@@ -138,7 +138,7 @@
       "purpose": ".gitmodulesとREADMEから6件の出所・固定版・利用条件を説明する",
       "page_notes": [
         {
-          "content": "vendorは直接編集せずリンクで参照します。Context7の監視系列はmcpb-v、addyosmaniの接頭辞は空文字です。mfg-kaizen-skillsはreleaseでなくtag固定です。"
+          "content": "vendorは直接編集せずリンクで参照します。Context7の監視系列はmcpb-v、addyosmaniの接頭辞は空文字です。mfg-kaizen-skillsはreleaseでなくtag固定です。スキル検査と更新監視はvendor_revisions.pyでHEADのgitlinkと上流タグのcommitを照合し、不一致・通信失敗・応答解析失敗を拒否します。"
         }
       ]
     },

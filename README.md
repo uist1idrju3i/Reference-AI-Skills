@@ -33,7 +33,7 @@ README.md                       使い方と唯一のスキル一覧表
 vendor/                         タグのcommitで固定した外部submodule
 .gitmodules                     出所、shallow指定、固定タグ、監視接頭辞
 .devin/wiki.json                DeepWikiのページとノート
-.github/scripts/                スキル・Wiki検査、タグ更新監視
+.github/scripts/                スキル・Wiki検査、固定版照合、タグ更新監視
 .github/workflows/              検査CIと更新通知
 .github/dependabot.yml          Actions・pip・submoduleの更新設定
 .github/actionlint.yaml         検査器がまだ認識しないGA runnerラベル
@@ -105,6 +105,8 @@ Dependabotは週次でGitHub Actionsとpipのzizmorを更新します。gitsubmo
 ## 検査とコマンド
 
 自前の検査スクリプトとテストはPython標準ライブラリだけで動きます。更新監視には認証済みのGitHub CLI（`gh`）も必要です。actionlintとzizmorの採用版・取得元・hashは`.github/workflows/agent-docs.yml`とrequirementsを参照してください。zizmorのrequirementsはCIと同じLinux x86_64用wheelを固定しています。
+
+スキル検査と更新監視は、HEADのgitlinkとGitHub上の固定タグのcommitを読み取り通信で照合します。オフラインや照合失敗では検査が失敗します。CIの空白検査は作業ツリーの差分ではなく、コミット済みの全内容を対象にします。
 
 ```sh
 python3 .github/scripts/check-skills.py
