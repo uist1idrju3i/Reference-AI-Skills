@@ -12,6 +12,8 @@ import subprocess
 import sys
 from urllib.parse import quote
 
+from vendor_revisions import verify_revisions
+
 
 class GitHub:
     def request(self, method, path, payload=None):
@@ -184,6 +186,7 @@ def main():
     args = parser.parse_args()
     try:
         root = args.root.resolve()
+        verify_revisions(root)
         origin = subprocess.run(["git", "-C", str(root), "remote", "get-url", "origin"],
                                 check=True, text=True, capture_output=True, timeout=15).stdout.strip()
         lines = watch(GitHub(), modules(root), repository(origin), args.write)

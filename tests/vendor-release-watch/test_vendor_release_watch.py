@@ -1,15 +1,19 @@
 """Mock GitHub responses so notification tests never contact a service."""
 
 import importlib.util
+import contextlib
+import io
 import json
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
 
 
 SCRIPT = Path(__file__).resolve().parents[2] / ".github/scripts/vendor_release_watch.py"
+sys.path.insert(0, str(SCRIPT.parent))
 SPEC = importlib.util.spec_from_file_location("vendor_release_watch", SCRIPT)
 WATCH = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(WATCH)
@@ -41,6 +45,15 @@ class FakeAPI:
 
 
 class WatchTest(unittest.TestCase):
+    def test_revision_drift_blocks_cli_before_any_api_access(self):
+        with patch.object(WATCH, "verify_revisions", side_effect=ValueError("gitlink mismatch")), \
+                patch.object(WATCH, "GitHub") as api, \
+                patch.object(sys, "argv", [str(SCRIPT), "--write"]), \
+                contextlib.redirect_stderr(io.StringIO()) as errors:
+            self.assertEqual(1, WATCH.main())
+            api.assert_not_called()
+            self.assertIn("gitlink mismatch", errors.getvalue())
+
     def test_semantic_versions_and_series(self):
         for tag in ("v2.0.0-rc.1", "v1.0", "other@9.0.0", "v01.0.0", "v1.0.0-extra"):
             self.assertIsNone(WATCH.version(tag, "v"))

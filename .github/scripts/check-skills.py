@@ -10,6 +10,8 @@ import os
 from pathlib import Path, PurePosixPath
 import re
 
+from vendor_revisions import verify_revisions
+
 
 NAME = r"[a-z0-9]+(?:-[a-z0-9]+)*"
 
@@ -134,6 +136,10 @@ def inventory_table(text: str, kinds: dict[str, str]) -> list[str]:
 
 def check(root: Path) -> list[str]:
     errors, modules = submodules(root)
+    try:
+        verify_revisions(root)
+    except ValueError as error:
+        errors.append(f"vendor固定版: {error}")
     agents, claude = root / ".agents/skills", root / ".claude/skills"
     if (not agents.is_dir() or agents.is_symlink()
             or not claude.is_dir() or claude.is_symlink()):
