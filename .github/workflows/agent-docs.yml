@@ -69,4 +69,4 @@ jobs:
         run: |
           "$RUNNER_TEMP/actionlint/actionlint" .github/workflows/*.yml
           zizmor --offline .github/workflows
-          git diff --check
+          git diff --check "$(git hash-object -t tree /dev/null)" HEAD
