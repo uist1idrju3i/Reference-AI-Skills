@@ -1,0 +1,27 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: '依存更新:'
+  - package-ecosystem: pip
+    directory: /.github
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: '依存更新:'
+  - package-ecosystem: gitsubmodule
+    directory: /
+    schedule:
+      interval: weekly
+    ignore:
+      - dependency-name: vendor/mattpocock-skills
+      - dependency-name: vendor/addyosmani-agent-skills
+      - dependency-name: vendor/yomiyasu
+      - dependency-name: vendor/context7
+      - dependency-name: vendor/ai-agent-skills
+      - dependency-name: vendor/mfg-kaizen-skills
+    commit-message:
+      prefix: '依存更新:'

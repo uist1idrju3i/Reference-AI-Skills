@@ -1,0 +1,5 @@
+CLAUDE.local.md
+.claude/settings.local.json
+AGENTS.override.md
+.yomiyasu/
+__pycache__/
