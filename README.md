@@ -18,6 +18,8 @@ AIエージェントと人間が使う規約、スキル、検査、依存の更
 
 このリポジトリを取得するときは、GitとPython 3.10以降を用意し、clone後に次を実行します。
 
+CRC引用データの生成・照合と`tests/crc-polynomial/`には、標準ライブラリの`compression.zstd`を備えたPython 3.14以降が必要です。
+
 ```sh
 git submodule update --init --depth 1
 ```
@@ -39,7 +41,7 @@ vendor/                         タグのcommitで固定した外部submodule
 .github/actionlint.yaml         検査器がまだ認識しないGA runnerラベル
 .github/zizmor-requirements.txt  ハッシュ固定の監査ツール
 .github/pull_request_template.md PRの変更・理由・検証・リスク欄
-tests/                          検査器と通知処理の負例・mockテスト
+tests/                          検査器・通知処理・CRC引用データの負例とfixtures
 ```
 
 ## スキル一覧
@@ -56,6 +58,7 @@ tests/                          検査器と通知処理の負例・mockテス�
 | [`decision-request`](.agents/skills/decision-request/SKILL.md) | 自作 | 本リポジトリ | BSD-3-Clause | 推奨案を添えて不明点や改善案の判断を求める |
 | [`session-retrospective`](.agents/skills/session-retrospective/SKILL.md) | 自作 | 本リポジトリ | BSD-3-Clause | セッション全体を振り返り改善を提案する |
 | [`template-adoption`](.agents/skills/template-adoption/SKILL.md) | 自作 | 本リポジトリ | BSD-3-Clause | 深い計画と承認を経て別のリポジトリへ導入する |
+| [`crc-polynomial`](.agents/skills/crc-polynomial/SKILL.md) | 自作 | 本リポジトリ | BSD-3-Clause、引用データはCC BY 4.0 | Koopmanの原文でデータ長・HD・誤りモデルに合うCRCを選ぶ |
 | [`grill-with-docs`](.agents/skills/grill-with-docs/SKILL.md) | 外部 | mattpocock/skills v1.3.2 | MIT | 質問で計画と用語を詰める |
 | [`grilling`](.agents/skills/grilling/SKILL.md) | 外部 | mattpocock/skills v1.3.2 | MIT | 計画の前提と判断を問い直す |
 | [`domain-modeling`](.agents/skills/domain-modeling/SKILL.md) | 外部 | mattpocock/skills v1.3.2 | MIT | 用語と概念の境界を整理する |
@@ -114,6 +117,7 @@ python3 .github/scripts/check-wiki.py
 python3 -m unittest discover -s tests/check-skills
 python3 -m unittest discover -s tests/check-wiki
 python3 -m unittest discover -s tests/vendor-release-watch
+python3 -m unittest discover -s tests/crc-polynomial
 python3 .github/scripts/vendor_release_watch.py --dry-run
 actionlint .github/workflows/*.yml
 python3 -m pip install --require-hashes --only-binary=:all: -r .github/zizmor-requirements.txt
@@ -138,3 +142,7 @@ clone時に`git -c core.symlinks=true clone <repository-url>`を使い、開発�
 ## ライセンス
 
 本リポジトリの規約、自作スキル、検査コードは[LICENSE](LICENSE)のBSD 3-Clause Licenseに従います。外部submoduleはそれぞれの利用条件に従い、ルートのLICENSEで一括して許諾されるわけではありません。上の一覧は固定版の表示であり、ライセンス不明の資材への許諾を意味しません。
+
+`crc-polynomial`の引用表と`tests/crc-polynomial/fixtures/`の原文HTML（zstd圧縮）は、[Philip Koopman, Carnegie Mellon UniversityのCRC資料](https://users.ece.cmu.edu/~koopman/crc/)に基づく[CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)のデータです。引用表には出典URL・取得日・著作権表示と、HTMLを表へ整形した変更内容を記載しています。原文の未確定値や表記異常は補正せず、採用前に公式サイトで再確認します。個別の重みデータファイルは同梱していません。
+
+HTMLは生成器の`compression.zstd.compress`でlevel 22・window_log 27（ultra相当）、単一thread、checksum・content size付きで保存します。同じPython・libzstdと入力で決定的に生成し、`fixtures/compression.json`に生成時の版・設定・圧縮ファイルのSHA-256を記録します。原文のSHA-256は引用表の`references/sources.json`で照合します。第三者Pythonパッケージやzstd CLIは不要です。
