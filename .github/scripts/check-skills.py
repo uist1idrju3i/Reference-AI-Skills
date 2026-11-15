@@ -15,7 +15,7 @@ from vendor_revisions import verify_revisions
 
 NAME = r"[a-z0-9]+(?:-[a-z0-9]+)*"
 YAML_NUMBER = re.compile(
-    r"[-+]?(?:0[box][0-9a-f_]+|(?:\d[\d_]*(?:\.[\d_]*)?|\.[\d_]+)(?:e[-+]?\d+)?"
+    r"[-+]?(?:0b[01]+|0o[0-7]+|0x[0-9a-f]+|(?:\d[\d_]*(?:\.[\d_]*)?|\.[\d_]+)(?:e[-+]?\d+)?"
     r"|\.(?:inf|nan)|\d[\d_]*(?::[0-5]?\d)+(?:\.[\d_]*)?)", re.IGNORECASE)
 
 
