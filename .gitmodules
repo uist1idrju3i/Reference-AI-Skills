@@ -1,0 +1,36 @@
+[submodule "vendor/mattpocock-skills"]
+	path = vendor/mattpocock-skills
+	url = https://github.com/mattpocock/skills.git
+	shallow = true
+	pinned-tag = v1.3.2
+	tag-prefix = v
+[submodule "vendor/addyosmani-agent-skills"]
+	path = vendor/addyosmani-agent-skills
+	url = https://github.com/addyosmani/agent-skills.git
+	shallow = true
+	pinned-tag = 0.6.16
+	tag-prefix =
+[submodule "vendor/yomiyasu"]
+	path = vendor/yomiyasu
+	url = https://github.com/nanaism/yomiyasu.git
+	shallow = true
+	pinned-tag = v3.1.0
+	tag-prefix = v
+[submodule "vendor/context7"]
+	path = vendor/context7
+	url = https://github.com/upstash/context7.git
+	shallow = true
+	pinned-tag = mcpb-v4.7.0
+	tag-prefix = mcpb-v
+[submodule "vendor/ai-agent-skills"]
+	path = vendor/ai-agent-skills
+	url = https://github.com/ysskrishna/ai-agent-skills.git
+	shallow = true
+	pinned-tag = v1.5.4
+	tag-prefix = v
+[submodule "vendor/mfg-kaizen-skills"]
+	path = vendor/mfg-kaizen-skills
+	url = https://github.com/yutut-app/mfg-kaizen-skills.git
+	shallow = true
+	pinned-tag = v1.11.0
+	tag-prefix = v
