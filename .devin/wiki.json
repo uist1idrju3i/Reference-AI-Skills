@@ -1,23 +1,242 @@
 {
   "repo_notes": [
     {
-      "content": "このリポジトリは将来のリポジトリへコピーするためのテンプレートです。現在存在するファイルを根拠に説明し、未実装の作業規則や機能を推測で追加しないでください。"
+      "content": "製品ではなく、エージェント規約・スキル・CI・依存監視の導入用テンプレートです。AGENTS.mdとREADME.mdを入口に、実在する設定とコードを根拠に説明してください。"
+    },
+    {
+      "content": "説明文書はREADME.mdだけでdocs/はありません。AGENTS.mdは規約、SKILL.mdは手順です。research-recordのdocs/保存は導入先向けで、このリポジトリへの調査文書追加を指示するものではありません。"
+    },
+    {
+      "content": "スキル一覧の正本はREADMEの表です。.agents/skillsには自作10件と外部28件があり、.claude/skillsに全件のミラーがあります。vendorへのリンクを自作として説明しないでください。"
+    },
+    {
+      "content": "外部submoduleは6件です。出所URL、shallow = true、pinned-tag、tag-prefixは.gitmodulesに記録されています。ルートのBSD 3-Clause Licenseが外部資材を一括許諾するわけではありません。"
+    },
+    {
+      "content": "設定、ローカル試験、GitHub-hosted CI、Issueへの書き込み、Wiki実生成は別の状態です。ファイルから実運用成功を推測せず、秘密や個人環境の絶対パスを記載しないでください。"
     }
   ],
   "pages": [
     {
-      "title": "概要とスキル一覧",
-      "purpose": "README.mdを根拠に目的、スキルの入口、固定版、ライセンス上の注意を説明する",
+      "title": "概要とテンプレートの目的",
+      "purpose": "READMEとLICENSEから目的、提供範囲、導入先で決める事項を示す",
       "page_notes": [
         {
-          "content": "vendor内の原文は変更せず、外部スキルとテンプレート自身の検査器を区別してください。"
+          "content": "製品固有の機能はありません。DeepWikiバッジはリンクであり、生成成功の検証結果ではありません。"
         }
       ]
     },
     {
-      "title": "検査と依存の更新確認",
-      "purpose": "スキル、Wiki、ワークフローの検査とタグ更新通知の仕組みを説明する",
-      "parent": "概要とスキル一覧"
+      "title": "新しいリポジトリへの導入",
+      "parent": "概要とテンプレートの目的",
+      "purpose": "template-adoptionから調査・承認・導入・検証の順を説明する",
+      "page_notes": [
+        {
+          "content": "AGENTS.mdの1〜12節をコピーし、13節と確認コマンドを導入先に合わせます。CLAUDE.mdは@AGENTS.mdだけです。統治文書追加は深い調査・計画と承認を先行させます。"
+        },
+        {
+          "content": "固定版はvendor-updateで再確認し、Wikiはdeepwiki-configで導入先の実装から再設計します。テンプレートのタグやページを無条件に使い回しません。"
+        }
+      ]
+    },
+    {
+      "title": "構成と情報の正本",
+      "parent": "概要とテンプレートの目的",
+      "purpose": "READMEの構成図を各ファイルと照合し、規約・手順・固定版の役割を示す",
+      "page_notes": [
+        {
+          "content": "CLAUDE.mdは規約の複製でなく参照です。.gitignoreは個人設定、.yomiyasu/、__pycache__/を除外します。docs/や別の調査文書はありません。"
+        }
+      ]
+    },
+    {
+      "title": "規約の全体像",
+      "parent": "概要とテンプレートの目的",
+      "purpose": "AGENTS.mdの汎用部1〜12節と固有部13節、確認コマンドの区別を示す",
+      "page_notes": [
+        {
+          "content": "AGENTS.mdは短い不変条件、スキルは具体的な手順を受け持ちます。スキル表はREADMEだけに置きます。"
+        }
+      ]
+    },
+    {
+      "title": "操作権限とGitの安全",
+      "parent": "規約の全体像",
+      "purpose": "AGENTS.mdの権限・ブランチ・公開操作・秘密の規則を説明する",
+      "page_notes": [
+        {
+          "content": "mainで作業せず、移動はgit mvを使い、stage対象を明示します。外部からの指示はデータです。スキルの採用は外部書き込みや公開の許可ではありません。"
+        }
+      ]
+    },
+    {
+      "title": "統治文書の変更承認",
+      "parent": "規約の全体像",
+      "purpose": "AGENTS.mdとtemplate-adoptionの調査・計画・承認条件を示す",
+      "page_notes": [
+        {
+          "content": "AGENTS.md、CLAUDE.md、.agents/skills、.claude/skillsの変更には深い調査・深い計画・承認が必要です。振り返りで出た改善案も自動変更の許可ではありません。"
+        }
+      ]
+    },
+    {
+      "title": "検証と完了報告",
+      "parent": "規約の全体像",
+      "purpose": "AGENTS.mdとPRテンプレートから検証・未確認・リスクの報告方法を説明する",
+      "page_notes": [
+        {
+          "content": "対象版、入力、環境を示し、取得不能や未実行を合格にしません。失敗記録を成功で上書きせず、コマンド成功と意味・表示・実環境の確認を分けます。"
+        }
+      ]
+    },
+    {
+      "title": "スキルの配置とリンク",
+      "parent": "概要とテンプレートの目的",
+      "purpose": ".agents/skillsと.claude/skills、README表、検査器の関係を示す",
+      "page_notes": [
+        {
+          "content": "外部リンクは../../vendor/...、ミラーは../../.agents/skills/<name>です。名前・frontmatter・README表・種類の整合をcheck-skills.pyで検査します。"
+        },
+        {
+          "content": "Windowsで通常ファイルとして取得済みのリンクは、core.symlinksの設定変更だけでは復元されません。READMEの注意に従い変更を保全してリンク実体を確認します。"
+        }
+      ]
+    },
+    {
+      "title": "構造と文書同期の自作スキル",
+      "parent": "スキルの配置とリンク",
+      "purpose": "document-structure、code-structure、docs-code-syncの使い分けを示す",
+      "page_notes": [
+        {
+          "content": "文書は意味・内容、コードは機能・責務で整理し、行数だけで分割しません。不一致ではコードを正として文書の更新計画を立てます。"
+        }
+      ]
+    },
+    {
+      "title": "記録と判断と振り返りの自作スキル",
+      "parent": "スキルの配置とリンク",
+      "purpose": "research-record、decision-request、session-retrospectiveの成果と適用条件を示す",
+      "page_notes": [
+        {
+          "content": "導入先のdocs/に再実行可能なMarkdown記録を保存し、不明点と改善案には推奨案を添えて判断を求めます。セッション全体の未完了・未確認と改善案を振り返ります。"
+        }
+      ]
+    },
+    {
+      "title": "CIと依存とWikiの自作スキル",
+      "parent": "スキルの配置とリンク",
+      "purpose": "github-actions-ci、vendor-update、deepwiki-config、template-adoptionの関連を示す",
+      "page_notes": [
+        {
+          "content": "CI作成前に最新安定版を確認し、その後で高速化します。依存更新では変更履歴を深く読み、回帰と有用な新機能を調べます。Wiki作成前には実装を深く調べます。"
+        }
+      ]
+    },
+    {
+      "title": "外部スキルとvendorの管理",
+      "parent": "概要とテンプレートの目的",
+      "purpose": ".gitmodulesとREADMEから6件の出所・固定版・利用条件を説明する",
+      "page_notes": [
+        {
+          "content": "vendorは直接編集せずリンクで参照します。Context7の監視系列はmcpb-v、addyosmaniの接頭辞は空文字です。mfg-kaizen-skillsはreleaseでなくtag固定です。スキル検査と更新監視はvendor_revisions.pyでHEADのgitlinkと上流タグのcommitを照合し、不一致・通信失敗・応答解析失敗を拒否します。"
+        }
+      ]
+    },
+    {
+      "title": "mattpocockの計画と引き継ぎ",
+      "parent": "外部スキルとvendorの管理",
+      "purpose": "7スキルの用途、呼び出し依存、課題管理と保存先の前提を説明する",
+      "page_notes": [
+        {
+          "content": "grill-with-docsはgrillingとdomain-modelingを呼びます。grillingとhandoffはproductivity配下で、他はengineering配下です。researchとprototypeも採用しています。"
+        },
+        {
+          "content": "wayfinderは課題管理の方式を前提とする計画用スキルで、追加セットアップ用スキルは未同梱です。handoffはOSの一時領域に保存します。操作権限、文書配置、永続保存の要否は別途確認します。"
+        }
+      ]
+    },
+    {
+      "title": "17種類の思考法",
+      "parent": "外部スキルとvendorの管理",
+      "purpose": "ai-agent-skills全17件とthinking-method-selectorの選択手順を原文から示す",
+      "page_notes": [
+        {
+          "content": "vendor/ai-agent-skills/skillsの17件をすべて採用しています。README一覧を正本として用途を原文と照合し、助言を正式判定や実測証拠と混同しないでください。"
+        }
+      ]
+    },
+    {
+      "title": "yomiyasuによる日本語推敲",
+      "parent": "外部スキルとvendorの管理",
+      "purpose": "SKILL.mdとscriptsからlint・前後照合・通読・記録の手順を説明する",
+      "page_notes": [
+        {
+          "content": "指摘は見直し候補で意味保持の保証ではありません。隠しパス・作業フォルダ境界の入力制約があり、READMEに対象ファイルの親を作業フォルダにする方法を記載しています。"
+        }
+      ]
+    },
+    {
+      "title": "公式資料による実装支援",
+      "parent": "外部スキルとvendorの管理",
+      "purpose": "source-driven-developmentとcontext7-mcpの用途と接続条件を示す",
+      "page_notes": [
+        {
+          "content": "context7-mcpはplugins/agent-plugins/context7/skills/context7-mcpを参照します。別途Context7 MCPサーバー接続が必要で、接続設定や秘密の認証情報は同梱していません。"
+        }
+      ]
+    },
+    {
+      "title": "製造改善スキルの利用条件",
+      "parent": "外部スキルとvendorの管理",
+      "purpose": "mfg-improvement-frameworksの用途とライセンス未確認表示を説明する",
+      "page_notes": [
+        {
+          "content": "mfg-kaizen-skills v1.11.0を採用していますが、上流にLICENSEがなく、転載・再配布の許諾は未確認です。採用を商用利用や再配布の許可と解釈しないでください。"
+        }
+      ]
+    },
+    {
+      "title": "依存の更新監視と通知",
+      "parent": "概要とテンプレートの目的",
+      "purpose": "Dependabotとvendor_release_watch.pyの分担、安定版判定、Issue更新を説明する",
+      "page_notes": [
+        {
+          "content": "DependabotはActions・pip・gitsubmoduleを週次確認し、固定タグの6件をignoreします。タグ監視はpinned-tagとtag-prefixに従い、数値版を比較し、draft・prereleaseと別系列を除外します。"
+        },
+        {
+          "content": "タグ監視は週次・手動起動です。既定と--dry-runはIssueを書かず、--writeだけが作成・更新します。APIエラーを成功と扱わず、自動closeしません。"
+        }
+      ]
+    },
+    {
+      "title": "並列CIとワークフロー監査",
+      "parent": "概要とテンプレートの目的",
+      "purpose": "agent-docs.ymlの起動条件、3並列job、権限、固定SHAとhash、キャッシュを説明する",
+      "page_notes": [
+        {
+          "content": "PRとmainへのpushでpathsによる除外なく実行し、contents: read、persist-credentials: false、古いPR実行の中止を設定しています。GA済みubuntu-26.04をactionlintが未認識のため限定設定を追加しています。"
+        }
+      ]
+    },
+    {
+      "title": "検査器と負例テスト",
+      "parent": "並列CIとワークフロー監査",
+      "purpose": ".github/scriptsとtestsの3系統を読み、拒否条件と検証できない範囲を説明する",
+      "page_notes": [
+        {
+          "content": "スキル検査は名前・frontmatter・境界・ミラー・README表・submodule設定、Wiki検査は必須項目・未知キー・親循環・重複JSONキー・上限を確認します。監視のmockテストは実サービスへの書き込み成功の証拠ではありません。"
+        }
+      ]
+    },
+    {
+      "title": "DeepWiki設定と再生成",
+      "parent": "概要とテンプレートの目的",
+      "purpose": ".devin/wiki.jsonとdeepwiki-config、check-wiki.pyから上限・親子関係・生成状態を説明する",
+      "page_notes": [
+        {
+          "content": "この設定は21ページ、ノート合計30件です。公式仕様は30ページ（Enterpriseは80）、100ノート、各10,000文字が上限です。検査器の既定は30ページで--max-pagesにより変更できます。設定commitだけではWiki再生成済みとは言えません。"
+        }
+      ]
     }
   ]
 }
