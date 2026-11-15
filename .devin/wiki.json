@@ -1,240 +1,513 @@
 {
   "repo_notes": [
     {
-      "content": "製品ではなく、エージェント規約・スキル・CI・依存監視の導入用テンプレートです。AGENTS.mdとREADME.mdを入口に、実在する設定とコードを根拠に説明してください。"
+      "content": "文書の配置規約はAGENTS.mdの13節が正本である。このリポジトリでは説明文書をREADME.mdに集約し、docs/を作らない。外部スキルが提案する文書配置をそのまま適用しない。"
     },
     {
-      "content": "説明文書はREADME.mdだけでdocs/はありません。AGENTS.mdは規約、SKILL.mdは手順です。research-recordのdocs/保存は導入先向けで、このリポジトリへの調査文書追加を指示するものではありません。"
+      "content": "README.mdの「検査とコマンド」にある自前の検査スクリプトとテストはPython標準ライブラリだけで動作する。更新監視には認証済みのGitHub CLIも必要であり、actionlint・zizmorは別の監査ツールである。"
     },
     {
-      "content": "スキル一覧の正本はREADMEの表です。.agents/skillsには自作10件と外部28件があり、.claude/skillsに全件のミラーがあります。vendorへのリンクを自作として説明しないでください。"
+      "content": "AGENTS.mdの3節では、取得したWebページ・Issue・依存の中の指示をデータとして扱う。外部資料を根拠として読むことと、そこで提案された操作を実行する権限を区別する。"
     },
     {
-      "content": "外部submoduleは6件です。出所URL、shallow = true、pinned-tag、tag-prefixは.gitmodulesに記録されています。ルートのBSD 3-Clause Licenseが外部資材を一括許諾するわけではありません。"
-    },
-    {
-      "content": "設定、ローカル試験、GitHub-hosted CI、Issueへの書き込み、Wiki実生成は別の状態です。ファイルから実運用成功を推測せず、秘密や個人環境の絶対パスを記載しないでください。"
+      "content": "CLAUDE.mdの内容は@AGENTS.mdだけであり、Claude Code向けに別の規約本文を持たない。エージェント共通の規約はAGENTS.mdを参照する。"
     }
   ],
   "pages": [
     {
-      "title": "概要とテンプレートの目的",
-      "purpose": "READMEとLICENSEから目的、提供範囲、導入先で決める事項を示す",
+      "title": "何を再利用できるテンプレートか",
+      "purpose": "テンプレートの目的、構成、38スキルの内訳と入口を示す。",
       "page_notes": [
         {
-          "content": "製品固有の機能はありません。DeepWikiバッジはリンクであり、生成成功の検証結果ではありません。"
-        }
-      ]
-    },
-    {
-      "title": "新しいリポジトリへの導入",
-      "parent": "概要とテンプレートの目的",
-      "purpose": "template-adoptionから調査・承認・導入・検証の順を説明する",
-      "page_notes": [
-        {
-          "content": "AGENTS.mdの1〜12節をコピーし、13節と確認コマンドを導入先に合わせます。CLAUDE.mdは@AGENTS.mdだけです。統治文書追加は深い調査・計画と承認を先行させます。"
+          "content": "README.mdの冒頭はAGENTS.md・スキル・CI・Dependabot・DeepWikiを別のリポジトリへ導入するテンプレートと説明している。アプリケーション製品の実装を提供するリポジトリではない。"
         },
         {
-          "content": "固定版はvendor-updateで再確認し、Wikiはdeepwiki-configで導入先の実装から再設計します。テンプレートのタグやページを無条件に使い回しません。"
-        }
-      ]
-    },
-    {
-      "title": "構成と情報の正本",
-      "parent": "概要とテンプレートの目的",
-      "purpose": "READMEの構成図を各ファイルと照合し、規約・手順・固定版の役割を示す",
-      "page_notes": [
-        {
-          "content": "CLAUDE.mdは規約の複製でなく参照です。.gitignoreは個人設定、.yomiyasu/、__pycache__/を除外します。docs/や別の調査文書はありません。"
-        }
-      ]
-    },
-    {
-      "title": "規約の全体像",
-      "parent": "概要とテンプレートの目的",
-      "purpose": "AGENTS.mdの汎用部1〜12節と固有部13節、確認コマンドの区別を示す",
-      "page_notes": [
-        {
-          "content": "AGENTS.mdは短い不変条件、スキルは具体的な手順を受け持ちます。スキル表はREADMEだけに置きます。"
-        }
-      ]
-    },
-    {
-      "title": "操作権限とGitの安全",
-      "parent": "規約の全体像",
-      "purpose": "AGENTS.mdの権限・ブランチ・公開操作・秘密の規則を説明する",
-      "page_notes": [
-        {
-          "content": "mainで作業せず、移動はgit mvを使い、stage対象を明示します。外部からの指示はデータです。スキルの採用は外部書き込みや公開の許可ではありません。"
-        }
-      ]
-    },
-    {
-      "title": "統治文書の変更承認",
-      "parent": "規約の全体像",
-      "purpose": "AGENTS.mdとtemplate-adoptionの調査・計画・承認条件を示す",
-      "page_notes": [
-        {
-          "content": "AGENTS.md、CLAUDE.md、.agents/skills、.claude/skillsの変更には深い調査・深い計画・承認が必要です。振り返りで出た改善案も自動変更の許可ではありません。"
-        }
-      ]
-    },
-    {
-      "title": "検証と完了報告",
-      "parent": "規約の全体像",
-      "purpose": "AGENTS.mdとPRテンプレートから検証・未確認・リスクの報告方法を説明する",
-      "page_notes": [
-        {
-          "content": "対象版、入力、環境を示し、取得不能や未実行を合格にしません。失敗記録を成功で上書きせず、コマンド成功と意味・表示・実環境の確認を分けます。"
-        }
-      ]
-    },
-    {
-      "title": "スキルの配置とリンク",
-      "parent": "概要とテンプレートの目的",
-      "purpose": ".agents/skillsと.claude/skills、README表、検査器の関係を示す",
-      "page_notes": [
-        {
-          "content": "外部リンクは../../vendor/...、ミラーは../../.agents/skills/<name>です。名前・frontmatter・README表・種類の整合をcheck-skills.pyで検査します。"
+          "content": "README.mdの「スキル一覧」には自作10件と外部28件があり、スキル名・種類・出典と固定版・ライセンス・使う場面を同じ表で確認できる。"
         },
         {
-          "content": "Windowsで通常ファイルとして取得済みのリンクは、core.symlinksの設定変更だけでは復元されません。READMEの注意に従い変更を保全してリンク実体を確認します。"
+          "content": "README.mdにはAsk DeepWikiバッジとディレクトリ構成図がある。DeepWiki設定は.devin/wiki.json、検査スクリプトは.github/scripts/、自動実行の定義は.github/workflows/にある。"
         }
       ]
     },
     {
-      "title": "構造と文書同期の自作スキル",
-      "parent": "スキルの配置とリンク",
-      "purpose": "document-structure、code-structure、docs-code-syncの使い分けを示す",
+      "title": "別のリポジトリへどう導入するか",
+      "purpose": "既存環境の調査から承認、規約の移植、依存の再確認、検査までの順序を説明する。",
+      "parent": "何を再利用できるテンプレートか",
       "page_notes": [
         {
-          "content": "文書は意味・内容、コードは機能・責務で整理し、行数だけで分割しません。不一致ではコードを正として文書の更新計画を立てます。"
-        }
-      ]
-    },
-    {
-      "title": "記録と判断と振り返りの自作スキル",
-      "parent": "スキルの配置とリンク",
-      "purpose": "research-record、decision-request、session-retrospectiveの成果と適用条件を示す",
-      "page_notes": [
-        {
-          "content": "導入先のdocs/に再実行可能なMarkdown記録を保存し、不明点と改善案には推奨案を添えて判断を求めます。セッション全体の未完了・未確認と改善案を振り返ります。"
-        }
-      ]
-    },
-    {
-      "title": "CIと依存とWikiの自作スキル",
-      "parent": "スキルの配置とリンク",
-      "purpose": "github-actions-ci、vendor-update、deepwiki-config、template-adoptionの関連を示す",
-      "page_notes": [
-        {
-          "content": "CI作成前に最新安定版を確認し、その後で高速化します。依存更新では変更履歴を深く読み、回帰と有用な新機能を調べます。Wiki作成前には実装を深く調べます。"
-        }
-      ]
-    },
-    {
-      "title": "外部スキルとvendorの管理",
-      "parent": "概要とテンプレートの目的",
-      "purpose": ".gitmodulesとREADMEから6件の出所・固定版・利用条件を説明する",
-      "page_notes": [
-        {
-          "content": "vendorは直接編集せずリンクで参照します。Context7の監視系列はmcpb-v、addyosmaniの接頭辞は空文字です。mfg-kaizen-skillsはreleaseでなくtag固定です。スキル検査と更新監視はvendor_revisions.pyでHEADのgitlinkと上流タグのcommitを照合し、不一致・通信失敗・応答解析失敗を拒否します。"
-        }
-      ]
-    },
-    {
-      "title": "mattpocockの計画と引き継ぎ",
-      "parent": "外部スキルとvendorの管理",
-      "purpose": "7スキルの用途、呼び出し依存、課題管理と保存先の前提を説明する",
-      "page_notes": [
-        {
-          "content": "grill-with-docsはgrillingとdomain-modelingを呼びます。grillingとhandoffはproductivity配下で、他はengineering配下です。researchとprototypeも採用しています。"
+          "content": ".agents/skills/template-adoption/SKILL.mdの最初の手順は、導入先の既存規約・コード・CI・権限を調べ、採用と除外、競合解消、検証を計画してユーザー承認を得ることである。"
         },
         {
-          "content": "wayfinderは課題管理の方式を前提とする計画用スキルで、追加セットアップ用スキルは未同梱です。handoffはOSの一時領域に保存します。操作権限、文書配置、永続保存の要否は別途確認します。"
-        }
-      ]
-    },
-    {
-      "title": "17種類の思考法",
-      "parent": "外部スキルとvendorの管理",
-      "purpose": "ai-agent-skills全17件とthinking-method-selectorの選択手順を原文から示す",
-      "page_notes": [
-        {
-          "content": "vendor/ai-agent-skills/skillsの17件をすべて採用しています。README一覧を正本として用途を原文と照合し、助言を正式判定や実測証拠と混同しないでください。"
-        }
-      ]
-    },
-    {
-      "title": "yomiyasuによる日本語推敲",
-      "parent": "外部スキルとvendorの管理",
-      "purpose": "SKILL.mdとscriptsからlint・前後照合・通読・記録の手順を説明する",
-      "page_notes": [
-        {
-          "content": "指摘は見直し候補で意味保持の保証ではありません。隠しパス・作業フォルダ境界の入力制約があり、READMEに対象ファイルの親を作業フォルダにする方法を記載しています。"
-        }
-      ]
-    },
-    {
-      "title": "公式資料による実装支援",
-      "parent": "外部スキルとvendorの管理",
-      "purpose": "source-driven-developmentとcontext7-mcpの用途と接続条件を示す",
-      "page_notes": [
-        {
-          "content": "context7-mcpはplugins/agent-plugins/context7/skills/context7-mcpを参照します。別途Context7 MCPサーバー接続が必要で、接続設定や秘密の認証情報は同梱していません。"
-        }
-      ]
-    },
-    {
-      "title": "製造改善スキルの利用条件",
-      "parent": "外部スキルとvendorの管理",
-      "purpose": "mfg-improvement-frameworksの用途とライセンス未確認表示を説明する",
-      "page_notes": [
-        {
-          "content": "mfg-kaizen-skills v1.11.0を採用していますが、上流にLICENSEがなく、転載・再配布の許諾は未確認です。採用を商用利用や再配布の許可と解釈しないでください。"
-        }
-      ]
-    },
-    {
-      "title": "依存の更新監視と通知",
-      "parent": "概要とテンプレートの目的",
-      "purpose": "Dependabotとvendor_release_watch.pyの分担、安定版判定、Issue更新を説明する",
-      "page_notes": [
-        {
-          "content": "DependabotはActions・pip・gitsubmoduleを週次確認し、固定タグの6件をignoreします。タグ監視はpinned-tagとtag-prefixに従い、数値版を比較し、draft・prereleaseと別系列を除外します。"
+          "content": ".agents/skills/template-adoption/SKILL.mdではAGENTS.mdの1〜12節をコピーし、13節と確認コマンドを導入先に合わせて書き直す。既存規約を黙って置き換えない。"
         },
         {
-          "content": "タグ監視は週次・手動起動です。既定と--dry-runはIssueを書かず、--writeだけが作成・更新します。APIエラーを成功と扱わず、自動closeしません。"
+          "content": ".agents/skills/template-adoption/SKILL.mdでは古い固定版を無条件にコピーせず、必要なスキルの実在、最新安定タグ、変更履歴、ライセンスを再確認してからsubmoduleを追加する。"
+        },
+        {
+          "content": ".agents/skills/template-adoption/SKILL.mdでは導入先のWikiを新たに設計する。テンプレート固有の製品名・ページ・ノートを残さず、導入先の文書配置規約に合わせる。"
         }
       ]
     },
     {
-      "title": "並列CIとワークフロー監査",
-      "parent": "概要とテンプレートの目的",
-      "purpose": "agent-docs.ymlの起動条件、3並列job、権限、固定SHAとhash、キャッシュを説明する",
+      "title": "どの規約を優先して作業するか",
+      "purpose": "指示の優先順位、Git操作の制限、言語と情報保護の規則を示す。",
+      "parent": "何を再利用できるテンプレートか",
       "page_notes": [
         {
-          "content": "PRとmainへのpushでpathsによる除外なく実行し、contents: read、persist-credentials: false、古いPR実行の中止を設定しています。GA済みubuntu-26.04をactionlintが未認識のため限定設定を追加しています。"
+          "content": "AGENTS.mdの1節はユーザーの明示的な指示、AGENTS.md、スキルの順に優先すると定めている。矛盾に気づいた場合は自己判断で解消せずユーザーへ確認する。"
+        },
+        {
+          "content": "AGENTS.mdの2節ではmainで作業せず、移動・改名はgit mvを使い、変更対象を明示してstageする。エージェントによるPRのマージ、tag作成、release公開、保護設定変更は禁止されている。"
+        },
+        {
+          "content": "AGENTS.mdの5節と7節では文書・commitメッセージを日本語、コード・識別子を英語に保つ。秘密や個人設定をcommitせず、文書の根拠に個人環境のパスを使わない。"
         }
       ]
     },
     {
-      "title": "検査器と負例テスト",
-      "parent": "並列CIとワークフロー監査",
-      "purpose": ".github/scriptsとtestsの3系統を読み、拒否条件と検証できない範囲を説明する",
+      "title": "スキルの正本とリンクはどこにあるか",
+      "purpose": "自作と外部の配置、Claudeミラー、一覧の同期対象を説明する。",
+      "parent": "何を再利用できるテンプレートか",
       "page_notes": [
         {
-          "content": "スキル検査は名前・frontmatter・境界・ミラー・README表・submodule設定、Wiki検査は必須項目・未知キー・親循環・重複JSONキー・上限を確認します。監視のmockテストは実サービスへの書き込み成功の証拠ではありません。"
+          "content": "AGENTS.mdの12節では自作スキルを.agents/skills/<name>/の実ディレクトリに置き、外部スキルは同じ入口からvendor/内へのシンボリックリンクで参照する。"
+        },
+        {
+          "content": "AGENTS.mdの12節では.claude/skills/<name>を../../.agents/skills/<name>への相対リンクにする。自作・外部のどちらにもClaude用ミラーが必要である。"
+        },
+        {
+          "content": "AGENTS.mdの12節はスキル一覧表の正本をREADME.mdの「スキル一覧」に限定している。追加・改名・削除では入口、ミラー、一覧表を同じ変更で同期する。"
         }
       ]
     },
     {
-      "title": "DeepWiki設定と再生成",
-      "parent": "概要とテンプレートの目的",
-      "purpose": ".devin/wiki.jsonとdeepwiki-config、check-wiki.pyから上限・親子関係・生成状態を説明する",
+      "title": "mattpocockのスキルで計画と探索をどう進めるか",
+      "purpose": "質問・用語設計・探索・試作・引き継ぎの関係と保存先の前提を説明する。",
+      "parent": "スキルの正本とリンクはどこにあるか",
       "page_notes": [
         {
-          "content": "この設定は21ページ、ノート合計30件です。公式仕様は30ページ（Enterpriseは80）、100ノート、各10,000文字が上限です。検査器の既定は30ページで--max-pagesにより変更できます。設定commitだけではWiki再生成済みとは言えません。"
+          "content": ".agents/skills/grill-with-docs/SKILL.mdはgrillingとdomain-modelingを呼び出す。.agents/skills/grilling/SKILL.mdは前提が確定した質問を同じラウンドにまとめて回答を待つ。.agents/skills/domain-modeling/SKILL.mdは用語の確定を用語集へ記録し、戻しにくさ・背景の意外性・実際の比較検討がそろう判断に限ってADRを提案する。"
+        },
+        {
+          "content": ".agents/skills/wayfinder/SKILL.mdは実装ではなく意思決定の計画を既定とする。課題管理方式が未指定ならセットアップ案内とlocal-markdownへのフォールバックがあるが、README.mdにあるとおり追加のセットアップ用スキルは同梱していない。"
+        },
+        {
+          "content": ".agents/skills/research/SKILL.mdは新しいコンテキストのバックグラウンドエージェントで一次資料を調べ、主張の出典を示したMarkdownへ記録する手順である。"
+        },
+        {
+          "content": ".agents/skills/prototype/SKILL.mdはロジック確認とUI案の探索を分け、検証した試作を使い捨てbranchへ残す。一方、.agents/skills/handoff/SKILL.mdは既存成果物を参照する引き継ぎをOSの一時領域へ保存するため、README.mdは永続化が必要な場合の保存先確認を求めている。"
+        }
+      ]
+    },
+    {
+      "title": "addyosmaniのスキルで実装の根拠をどう確かめるか",
+      "purpose": "source-driven-developmentの対象版確認、資料の優先順位、未確認事項の扱いを示す。",
+      "parent": "スキルの正本とリンクはどこにあるか",
+      "page_notes": [
+        {
+          "content": ".agents/skills/source-driven-development/SKILL.mdは依存ファイルから対象版を検出して公式資料を取得し、その仕様に沿って実装して出典を示す。版が不明な場合は推測しない。"
+        },
+        {
+          "content": ".agents/skills/source-driven-development/SKILL.mdは公式ドキュメント、公式ブログ・変更履歴、Web標準、互換性情報の順に資料を優先する。一般ブログや学習済み知識を一次資料として扱わない。"
+        },
+        {
+          "content": ".agents/skills/source-driven-development/SKILL.mdは公式資料同士の矛盾をユーザーへ示し、対象版での挙動を確かめる。資料で確認できない実装パターンは未検証として明示する。"
+        }
+      ]
+    },
+    {
+      "title": "yomiyasuで日本語の意味を保って検査するには",
+      "purpose": "推敲前後の照合、候補の扱い、隠しディレクトリ入力の制約を説明する。",
+      "parent": "スキルの正本とリンクはどこにあるか",
+      "page_notes": [
+        {
+          "content": ".agents/skills/yomiyasu/SKILL.mdは書き換え案を対象、肯定と否定、動作主、範囲と条件、断定の強さ、数値・固有名詞・時期で原文と照合し、意味が動く案を捨てる。"
+        },
+        {
+          "content": ".agents/skills/yomiyasu/SKILL.mdではlintを修正の合否判定ではなく候補の手がかりとする。yomiyasu_check.pyのrunで比較し、verifyで提出する最終稿と記録の一致を確かめる。"
+        },
+        {
+          "content": "README.mdのyomiyasu実行案内は隠しディレクトリを含む入力パスを避け、そのファイルの親を作業フォルダとしてファイル名を渡す方法を示す。検査の成功を意味保持の保証とは扱わない。"
+        }
+      ]
+    },
+    {
+      "title": "Context7で対象版の資料をどう取得するか",
+      "purpose": "接続前提とライブラリID解決、文書とソース取得の使い分けを説明する。",
+      "parent": "スキルの正本とリンクはどこにあるか",
+      "page_notes": [
+        {
+          "content": "README.mdの外部スキル注意事項はcontext7-mcpにContext7 MCPサーバー接続が必要と明記する。このテンプレートは接続設定や認証情報を提供しない。"
+        },
+        {
+          "content": ".agents/skills/context7-mcp/SKILL.mdはresolve-library-idで対象ライブラリを解決し、対象版を選び、query-docsでは一つの概念に絞って資料を取得する。"
+        },
+        {
+          "content": ".agents/skills/context7-mcp/SKILL.mdではquery-codeが利用できる場合に署名・既定値・エラー発生箇所などをソースで確かめる。取得したファイルと行を引用し、ソース用IDと文書用IDを区別する。"
+        }
+      ]
+    },
+    {
+      "title": "17の思考スキルから何を選ぶか",
+      "purpose": "thinking-method-selectorで次に必要な判断や成果物に合う手法を選ぶ。",
+      "parent": "スキルの正本とリンクはどこにあるか",
+      "page_notes": [
+        {
+          "content": ".agents/skills/thinking-method-selector/SKILL.mdは手法が指定されていない問題に対して一つの手法を選び、そのまま実行する。単純な作業依頼や手法指定済みの依頼は選定対象にしない。"
+        },
+        {
+          "content": ".agents/skills/thinking-method-selector/SKILL.mdはキーワードではなく次に必要な判断や成果物で選ぶ。二つの候補が同程度で回答が選定を変える場合だけ、最大一つ質問する。"
+        },
+        {
+          "content": ".agents/skills/thinking-method-selector/SKILL.mdには対応スキルが未導入の場合の簡略手順がある。導入済みなら当該スキルに従い、追加で提案する後続手法は最大一つにする。"
+        }
+      ]
+    },
+    {
+      "title": "原因・根拠・数量をどう考えるか",
+      "purpose": "分析、批判、第一原理、原因追究、概算、システム思考を問いで区別する。",
+      "parent": "17の思考スキルから何を選ぶか",
+      "page_notes": [
+        {
+          "content": ".agents/skills/analytical-thinking/SKILL.mdは分解した問いと仮説に反証条件を置く。.agents/skills/critical-thinking/SKILL.mdは主張の根拠、前提、論理の飛躍を調べるため、数量の説明と主張の吟味を区別できる。"
+        },
+        {
+          "content": ".agents/skills/first-principles-thinking/SKILL.mdは引き継いだ前提や類推を問い直し、基礎条件から案を組み立てる。既存案をそのまま最適化することとは異なる。"
+        },
+        {
+          "content": ".agents/skills/five-whys/SKILL.mdは各因果のつながりをverifiedまたはhypothesisとして区別し、変更できる原因に達するまでたどる。人を責める説明を根本原因に置き換えない。"
+        },
+        {
+          "content": ".agents/skills/fermi-estimation/SKILL.mdは要素と範囲に分けて不確かな量を概算する。.agents/skills/systems-thinking/SKILL.mdは相互作用、循環、遅延を扱うため、一つの数値の見積もりと全体への波及を分けて検討できる。"
+        }
+      ]
+    },
+    {
+      "title": "発想・利用者・倫理をどう検討するか",
+      "purpose": "案を増やす手法、人への影響を調べる手法、視点を分ける手法を説明する。",
+      "parent": "17の思考スキルから何を選ぶか",
+      "page_notes": [
+        {
+          "content": ".agents/skills/creative-thinking/SKILL.mdは案を広げて組み合わせる。.agents/skills/lateral-thinking/SKILL.mdは前提を反転させるなどして発想の枠を変えるため、案の数が少ない場合と既存の枠から出られない場合を区別できる。"
+        },
+        {
+          "content": ".agents/skills/design-thinking/SKILL.mdは利用者の課題から設計と試験計画へ進む。.agents/skills/ethical-thinking/SKILL.mdは関係者への害、公平性、力関係、同意を検討し、使いやすさと倫理上の判断を混同しない。"
+        },
+        {
+          "content": ".agents/skills/six-thinking-hats/SKILL.mdはBlue・White・Red・Black・Yellow・Greenを混ぜずに使う。Whiteは事実・仮定・不明を区別し、最後のBlueは各視点で出た内容だけからまとめる。"
+        }
+      ]
+    },
+    {
+      "title": "選択肢・戦略・優先順位をどう決めるか",
+      "purpose": "比較、実行順、方向づけ、失敗予防の使い分けを示す。",
+      "parent": "17の思考スキルから何を選ぶか",
+      "page_notes": [
+        {
+          "content": ".agents/skills/tradeoff-analysis/SKILL.mdは何もしない案も含めて必須条件と重み付きの評価軸で比較し、重みや入力で結論が変わるか、選択を戻せるかを検討する。"
+        },
+        {
+          "content": ".agents/skills/prioritization/SKILL.mdは目標と処理能力を定め、RICEやMoSCoWなどで順序と今回実施しない範囲を決める。全項目を優先とする判断を避ける。"
+        },
+        {
+          "content": ".agents/skills/strategic-thinking/SKILL.mdは制約下で方向と集中する選択肢を決める。.agents/skills/swot-analysis/SKILL.mdは内外の条件をS・W・O・Tで整理して行動へつなぐため、方向づけと状況整理を使い分ける。"
+        },
+        {
+          "content": ".agents/skills/pre-mortem/SKILL.mdは計画が失敗したと仮定し、起こり得る原因を順位付けして予防・検出・対応を決める。発生済みの原因を確定する調査とは区別する。"
+        }
+      ]
+    },
+    {
+      "title": "製造・品質改善では何を確認してから進めるか",
+      "purpose": "mfgの入口、道具の選定、数値検算、追加スキルの前提を示す。",
+      "parent": "スキルの正本とリンクはどこにあるか",
+      "page_notes": [
+        {
+          "content": ".agents/skills/mfg-improvement-frameworks/SKILL.mdは新しい案件で読者、使う場面、今回決めたいことなど七つの前提を確定するまで先へ進まない。選定の対応表はreferences/00_mapping.mdを先に読む。"
+        },
+        {
+          "content": ".agents/skills/mfg-improvement-frameworks/SKILL.mdはQCストーリーを固定順序ではなく案件に応じて組む部品として扱う。複数の道具をまたぐ場合はreferences/90_handoff.mdの受け渡し規則が前提になる。"
+        },
+        {
+          "content": ".agents/skills/mfg-improvement-frameworks/SKILL.mdは資料作成前に数値骨格をassets/skeleton-example.ymlの様式へ記入し、assets/check_numbers.pyで照合する。図表の数値は推測で補わない。"
+        },
+        {
+          "content": ".agents/skills/mfg-improvement-frameworks/SKILL.mdはExcel操作をanthropic-skills:xlsx、スライドの体裁をslider-craftへ分担する。これらはREADME.mdの導入済み38スキルには含まれず、製造スキルだけで操作環境まで整うわけではない。"
+        }
+      ]
+    },
+    {
+      "title": "文書とコードを何の単位で整理するか",
+      "purpose": "自作の構造設計と文書同期の手順を示す。",
+      "parent": "スキルの正本とリンクはどこにあるか",
+      "page_notes": [
+        {
+          "content": ".agents/skills/document-structure/SKILL.mdは文書を行数ではなく意味と内容で分け、読者の目的、正本、索引、参照を確かめて整理する。"
+        },
+        {
+          "content": ".agents/skills/code-structure/SKILL.mdは機能、責務、状態の所有者を調べて境界を決める。ファイルの大きさだけを理由に分割しない。"
+        },
+        {
+          "content": ".agents/skills/docs-code-sync/SKILL.mdはコードベースを正本として差異を調べ、影響する文書と更新順の計画を作る。古い文書に合わせて実装を変えない。"
+        }
+      ]
+    },
+    {
+      "title": "調査・曖昧な判断・振り返りをどう残すか",
+      "purpose": "自作の記録、意思決定依頼、終了時報告の責務を説明する。",
+      "parent": "スキルの正本とリンクはどこにあるか",
+      "page_notes": [
+        {
+          "content": ".agents/skills/research-record/SKILL.mdは調査・検討・検証結果を導入先のdocs/配下へMarkdownで残す手順である。導入先の配置規約と衝突する場合は先に確認する。"
+        },
+        {
+          "content": ".agents/skills/decision-request/SKILL.mdは不明点と改善案について、選択肢、推奨案、得失、費用、リスクをまとめてユーザーへ判断を求める。推奨案を承認とみなさない。"
+        },
+        {
+          "content": ".agents/skills/session-retrospective/SKILL.mdは最初の依頼から追加指示と検証までを振り返り、達成・未完了・未確認を照合する。統治文書の改善は提案にとどめる。"
+        }
+      ]
+    },
+    {
+      "title": "CI作成と依存更新の前に何を調べるか",
+      "purpose": "自作スキルによる依存バージョンの確認、性能設計、変更履歴と採否の手順を示す。",
+      "parent": "スキルの正本とリンクはどこにあるか",
+      "page_notes": [
+        {
+          "content": ".agents/skills/github-actions-ci/SKILL.mdはCI/CD作成前に一次資料で最新安定版とrunnerを確認し、キャッシュや並列化で速度を最適化する。"
+        },
+        {
+          "content": ".agents/skills/vendor-update/SKILL.mdは更新範囲の変更履歴を深く読み、回帰の有無と、このリポジトリで役立つ新機能を確認する。"
+        },
+        {
+          "content": ".agents/skills/vendor-update/SKILL.mdは版・出所・ライセンス・互換性を調べて採否と検証計画を示す。Dependabotが作ったPRも人手の更新と同じ確認対象である。"
+        }
+      ]
+    },
+    {
+      "title": "DeepWikiのページとノートをどう設計するか",
+      "purpose": "公式仕様の確認、コード調査、生成対象の設計と再生成の区別を示す。",
+      "parent": "何を再利用できるテンプレートか",
+      "page_notes": [
+        {
+          "content": ".agents/skills/deepwiki-config/SKILL.mdは設定を書く前に入口、依存、状態、設定、試験、CI、運用規約まで深く調べ、実際の呼び出しとデータの流れを確認する。"
+        },
+        {
+          "content": ".agents/skills/deepwiki-config/SKILL.mdはhttps://docs.devin.ai/work-with-devin/deepwikiを毎回確認し、通常30ページ、Enterprise80ページ、合計100ノート、各10,000文字の上限内で読者の問いに沿って設計する。pagesが生成対象の全ページになる。"
+        },
+        {
+          "content": ".agents/skills/deepwiki-config/SKILL.mdは設定のcommitとWiki再生成を区別する。生成結果と更新状態を実際に確認するまでWiki更新済みと報告しない。"
+        }
+      ]
+    },
+    {
+      "title": "スキル検査は何を拒否するか",
+      "purpose": "check-skillsのfrontmatter、一覧表、vendor境界、ミラーの検査を説明する。",
+      "parent": "スキルの正本とリンクはどこにあるか",
+      "page_notes": [
+        {
+          "content": ".github/scripts/check-skills.pyのmetadataはfrontmatterのnameがディレクトリ名と一致する一件であることと、空でないdescriptionが一件あることを検査する。名前はkebab-caseに制限される。"
+        },
+        {
+          "content": ".github/scripts/check-skills.pyのscalarは引用符付き文字列と複数行文字列を扱い、引用符なしの数値・真偽値・nullを拒否する。binary・octal・hexは基数ごとに異なる桁で判定する。"
+        },
+        {
+          "content": ".github/scripts/check-skills.pyのinventory_tableは「## スキル一覧」が一節だけあること、先頭列のMarkdownリンク形式、種類列、列数、全正本の過不足と重複を検査する。"
+        },
+        {
+          "content": ".github/scripts/check-skills.pyのcheckはvendorリンクの解決先がvendor/の内側であることとsubmoduleへの所属を確認する。Claudeミラーのリンク文字列も指定した相対パスと照合する。"
+        }
+      ]
+    },
+    {
+      "title": "固定タグとsubmoduleのcommit一致をどう保証するか",
+      "purpose": ".gitmodulesの監視情報とvendor_revisionsの照合手順を説明する。",
+      "parent": "スキル検査は何を拒否するか",
+      "page_notes": [
+        {
+          "content": ".gitmodulesは6件のsubmoduleにshallow = true、pinned-tag、tag-prefixを記録している。Context7の監視系列はmcpb-vであり、別系列のタグを同じ候補として扱わない。"
+        },
+        {
+          "content": ".github/scripts/vendor_revisions.pyはHEADのgitlinkをgit ls-treeで読み、git ls-remoteで取得した固定タグと比較する。annotated tagではタグオブジェクトではなくpeeled commitを優先する。"
+        },
+        {
+          "content": ".github/scripts/vendor_revisions.pyは重複応答、不正な参照、タグ欠損、不正なgitlink、通信失敗で失敗する。check-skills.pyとvendor_release_watch.pyの両方がこの照合を呼ぶ。"
+        }
+      ]
+    },
+    {
+      "title": "Wiki設定の不正はどう検出するか",
+      "purpose": "check-wikiのJSON、スキーマ、上限、親参照の検査を示す。",
+      "parent": "DeepWikiのページとノートをどう設計するか",
+      "page_notes": [
+        {
+          "content": ".github/scripts/check-wiki.pyのload_configはJSONの重複キー、NaN、Infinityを拒否する。validateは必須キー、未知キー、文字列と配列の型を検査する。"
+        },
+        {
+          "content": ".github/scripts/check-wiki.pyはページ名の重複・前後空白、不明な親、循環参照を拒否する。parentを指定する場合は空でない文字列が必要なので、ルートページではparentを省略する。"
+        },
+        {
+          "content": ".github/scripts/check-wiki.pyはrepo_notesと全page_notesを合計してノート数を検査する。--max-pagesはページ数の上限だけを変更し、ノート合計と一件あたりの文字数制限は変更しない。"
+        }
+      ]
+    },
+    {
+      "title": "新版候補から通知Issueをどう作るか",
+      "purpose": "vendor_release_watch.pyの安定版選定、書き込み前検査、Issueの識別を示す。",
+      "parent": "Vendor監視はいつ動きどんな権限を持つか",
+      "page_notes": [
+        {
+          "content": ".github/scripts/vendor_release_watch.pyのnewestはreleaseとtagを併用し、指定prefixの三要素バージョンを数値比較する。draftとprereleaseは候補から除き、現在の固定タグが一覧にない場合も失敗する。"
+        },
+        {
+          "content": ".github/scripts/vendor_release_watch.pyのwatchは全submoduleの候補と既存Issueを調べて計画を作ってから書き込む。後の照会でAPIエラーが起きた場合に、先のsubmoduleだけ通知済みになることを避ける。"
+        },
+        {
+          "content": ".github/scripts/vendor_release_watch.pyはsubmoduleパス由来のmarkerで通知Issueを識別し、日本語の本文にcompareリンクを入れる。既存Issueは更新し、閉じられていれば再openするが、自動closeはしない。"
+        }
+      ]
+    },
+    {
+      "title": "PRとmainではどの検査が並列実行されるか",
+      "purpose": "Agent docsの起動条件、同時実行制御、三つのjobの担当を説明する。",
+      "parent": "何を再利用できるテンプレートか",
+      "page_notes": [
+        {
+          "content": ".github/workflows/agent-docs.ymlはpull_requestとmainへのpushで起動し、pathsフィルターを付けていない。文書変更だけの場合も必須検査を起動する。"
+        },
+        {
+          "content": ".github/workflows/agent-docs.ymlのconcurrencyはPR番号またはrefごとに実行をまとめ、pull_requestの場合だけcancel-in-progressを有効にする。"
+        },
+        {
+          "content": ".github/workflows/agent-docs.ymlはskills・wiki・workflowsの三つを並列実行する。skillsはsubmodule込みの検査、wikiはWiki検査と通知mockテスト、workflowsは監査ツールと空白検査を受け持つ。"
+        }
+      ]
+    },
+    {
+      "title": "CIの固定版・権限・取得物をどう守るか",
+      "purpose": "ActionのSHA、監査ツールのhash、runner設定、全commit内容の検査を示す。",
+      "parent": "PRとmainではどの検査が並列実行されるか",
+      "page_notes": [
+        {
+          "content": ".github/workflows/agent-docs.ymlはcheckoutとsetup-pythonをfull SHAで固定し、checkoutにpersist-credentials: falseを指定する。workflowの権限はcontents: readである。"
+        },
+        {
+          "content": ".github/workflows/agent-docs.ymlはactionlintアーカイブをSHA-256照合し、.github/zizmor-requirements.txtを--require-hashesで導入する。.github/actionlint.yamlは監査ツールが未認識のubuntu-26.04ラベルを追加している。"
+        },
+        {
+          "content": ".github/workflows/agent-docs.ymlの空白検査は空treeとHEADを比較するgit diff --checkで、コミット済みの全内容を対象にする。クリーンなcheckoutの作業差分だけを検査して終わらない。"
+        }
+      ]
+    },
+    {
+      "title": "Vendor監視はいつ動きどんな権限を持つか",
+      "purpose": "Vendor release watchのスケジュール、排他制御、書き込みモードを説明する。",
+      "parent": "PRとmainではどの検査が並列実行されるか",
+      "page_notes": [
+        {
+          "content": ".github/workflows/vendor-release-watch.ymlは月曜06:23 UTCのscheduleとworkflow_dispatchで起動する。権限はcontents: readとissues: writeで、通知先リポジトリのIssue操作に使う。"
+        },
+        {
+          "content": ".github/workflows/vendor-release-watch.ymlは共通concurrency groupで重複実行を抑え、cancel-in-progressを無効にする。watch jobのtimeoutは15分である。"
+        },
+        {
+          "content": ".github/scripts/vendor_release_watch.pyは既定と--dry-runでは書き込まず、--writeだけがIssueを操作する。.github/workflows/vendor-release-watch.ymlは--writeを指定するため、動作確認のための手動起動も書き込み権限を伴う。"
+        }
+      ]
+    },
+    {
+      "title": "Dependabotとタグ通知は何を分担するか",
+      "purpose": "更新PRと固定タグ通知の違い、対象ディレクトリ、除外設定を示す。",
+      "parent": "Vendor監視はいつ動きどんな権限を持つか",
+      "page_notes": [
+        {
+          "content": ".github/dependabot.ymlはgithub-actionsを/、pipを/.github、gitsubmoduleを/で週次実行する。Actionsとpipによる監査ツールの更新も監視対象である。"
+        },
+        {
+          "content": ".github/dependabot.ymlはタグ固定の6submoduleだけをignoreする。README.mdは将来追加するbranch追従submoduleが個別除外しなければ対象になることと、固定タグの通知をVendor監視へ分担する理由を説明している。"
+        },
+        {
+          "content": ".github/dependabot.ymlでは全ecosystemのcommit-message.prefixを「依存更新:」にそろえている。自作の通知スクリプトによるIssueとDependabotの更新PRを区別して読む。"
+        }
+      ]
+    },
+    {
+      "title": "SHA固定なのにActionsが起動しないときは",
+      "purpose": "許可設定と固定SHAを区別し、カンマ区切りとjob未作成時の確認方法を示す。",
+      "parent": "PRとmainではどの検査が並列実行されるか",
+      "page_notes": [
+        {
+          "content": "README.mdのActions導入案内はcheckoutとsetup-pythonがSHA固定でも、導入先の選択許可ポリシーで別途許可が必要と説明する。許可されないActionを使うworkflowは実行開始前に拒否され得る。"
+        },
+        {
+          "content": "README.mdの許可パターン例はactions/checkout@*, actions/setup-python@*のようにカンマで区切る。空白だけで二つのパターンを連結せず、リンク先のGitHub公式設定手順で確認する。"
+        },
+        {
+          "content": "README.mdのstartup_failure案内はjobが作られない場合を説明し、対象SHAのrun結論とskills・wiki・workflowsの実行を照合する。エージェントが設定を変えたり検査を外したりして回避しない。"
+        }
+      ]
+    },
+    {
+      "title": "正常系と負例はどのテストで確かめるか",
+      "purpose": "三つのunittest群と境界・異常・通信失敗の検査対象を示す。",
+      "parent": "PRとmainではどの検査が並列実行されるか",
+      "page_notes": [
+        {
+          "content": "tests/check-skills/にはfrontmatter・一覧・リンクの負例と固定版照合のmockテストがある。0bad・0o9・0x1Gは文字列として受理し、0b101・0o17・0x1Fは引用符なしの数値として拒否する対照がある。"
+        },
+        {
+          "content": "tests/check-wiki/はページ数、ノート合計、文字数の境界、未知キー、親参照と循環、JSON解析失敗、CLIの成功と失敗、ページ上限引数を検査する。"
+        },
+        {
+          "content": "tests/vendor-release-watch/はFakeAPIとmockで外部書き込みを行わず、空入力、候補なし、作成・再open、重複Issue、API失敗時の書き込み停止を検査する。"
+        }
+      ]
+    },
+    {
+      "title": "Windowsや新しいcloneでリンクを使うには",
+      "purpose": "シンボリックリンク権限、既存cloneの注意、submodule初期化を説明する。",
+      "parent": "スキルの正本とリンクはどこにあるか",
+      "page_notes": [
+        {
+          "content": "README.mdのWindows節はclone時にgit -c core.symlinks=true cloneを使い、開発者モードまたはリンク作成権限を有効にする方法を示す。"
+        },
+        {
+          "content": "README.mdは既存cloneでcore.symlinks trueを設定するだけでは、通常ファイルとして取得済みのリンクは復元されないと説明する。未保存の変更を保全してリンクの実体を確認する。"
+        },
+        {
+          "content": "AGENTS.mdの確認コマンドにはgit submodule update --init --depth 1がある。外部スキルのリンク先を利用するには、入口だけでなくvendor/内のsubmodule本体も取得する。"
+        }
+      ]
+    },
+    {
+      "title": "どこまで再利用・再配布できるか",
+      "purpose": "自作と外部のライセンス境界、不明な許諾、同梱データの扱いを説明する。",
+      "parent": "何を再利用できるテンプレートか",
+      "page_notes": [
+        {
+          "content": "LICENSEはBSD 3-Clauseで、ソース配布時の著作権表示・条件・免責の保持と、バイナリ配布時の文書等への表示を求める。README.mdは自作の規約・スキル・検査コードへこのライセンスを適用している。"
+        },
+        {
+          "content": "README.mdの外部スキル表は各固定版のライセンスを示し、yomiyasuにはMITに加えて同梱データのUnicode-3.0を記載する。外部submoduleをルートLICENSEで一括許諾するものではない。"
+        },
+        {
+          "content": "README.mdはmfg-improvement-frameworksの上流にLICENSEがなく、転載・再配布の許諾が未確認と明記する。採用済みであることから商用利用や再配布の許可を推定しない。"
+        }
+      ]
+    },
+    {
+      "title": "検査失敗や未確認事項をどう切り分けるか",
+      "purpose": "ローカル情報の除外、ネットワーク依存、結果報告の入口を示す。",
+      "parent": "何を再利用できるテンプレートか",
+      "page_notes": [
+        {
+          "content": ".gitignoreはCLAUDE.local.md、.claude/settings.local.json、AGENTS.override.md、.yomiyasu/、__pycache__/を除外している。個人設定や推敲の作業記録を共有設定に混ぜない。"
+        },
+        {
+          "content": "README.mdはスキル検査と更新監視が上流タグを読み取り通信で照合すると説明する。オフラインや照合失敗は検査失敗であり、ローカルファイルがそろっているだけでは成功しない。"
+        },
+        {
+          "content": ".github/pull_request_template.mdは概要・変更理由・検証・未確認とリスクを分ける。検証には対象commit、入力と環境、コマンドと結果を記録し、未実行を成功と書かない。"
         }
       ]
     }

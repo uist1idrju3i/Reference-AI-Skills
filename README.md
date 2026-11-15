@@ -123,6 +123,10 @@ git diff --check
 
 CIはPRとmainへのpushで起動し、pathsによる絞り込みをしません。スキル、Wiki、ワークフローの3jobを並列実行し、古いPR実行は中止します。スキルjobはsubmoduleを浅く取得し、Wiki jobでは更新監視のmockテストも実行します。
 
+Actionsを選択許可する導入先では、管理者が`actions/checkout`と`actions/setup-python`を許可する必要があります。full SHA固定だけでは許可されません。許可パターンは空白だけでつながず、`actions/checkout@*, actions/setup-python@*`のようにカンマで区切ります。SHA固定の要件は維持してください。[公式の設定手順](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository)も確認します。
+
+許可ポリシーによる`startup_failure`では、jobが作られないことがあります。チェック一覧だけで成功と判断せず、対象SHAのActions runの結論と、`skills`・`wiki`・`workflows`の3jobが実行されたことを確認します。CodeQLなどGitHub管理のworkflowが使うactionも、適用される許可ポリシーの確認対象です。エージェントが無断で設定を変更したり、検査を外して回避したりしません。
+
 日本語の候補検査には`python3 .agents/skills/yomiyasu/scripts/yomiyasu_lint.py <file>`を使います。隠しディレクトリ内のファイルは、その親を作業フォルダにしてファイル名を渡してください。指摘は自動的な不合格や意味保持の保証ではありません。修正前後の照合と通読も必要です。
 
 DeepWiki設定は`deepwiki-config`に従って設計します。[公式仕様](https://docs.devin.ai/work-with-devin/deepwiki)の上限を再確認し、設定のcommitと実際のWiki再生成は区別してください。
