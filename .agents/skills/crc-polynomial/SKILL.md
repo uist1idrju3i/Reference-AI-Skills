@@ -14,4 +14,4 @@ description: CRC多項式を選定・変更するときに、Koopmanの一次資
 7. 多項式の選択とCRC方式全体を分ける。初期値、xorout、反射、送信順を定め、既知のcheck値・テストベクトルと照合する。空入力、既知メッセージ、長さ境界も試し、用途に必要な誤り検出を検証する。
 8. 選んだ多項式の全表記、幅、最大dataword長、要求HD、誤りモデル、初期値等、採否の理由、原文URL、取得日、検証結果と未確認事項を導入先の配置規約に従って残す。
 9. 引用データはPhilip Koopman, Carnegie Mellon UniversityのCC BY 4.0。コピー時は著作者・出典URL・ライセンスURL・変更内容の表示を保つ。表はHTMLを整形した引用で、値を再計算していない。個別の重みデータファイルは取得しない。
-10. スキルのルートで`python3 scripts/fetch_koopman.py`を実行するとオンラインで表を再生成する。最新HTMLとの照合は`--check`、保存HTMLとの照合は`--check --html-dir <保存先>`を付ける。再生成時の`--save-html-dir <保存先>`は原文をgzipで保存する。取得・解析・件数・一致検査の失敗を成功扱いせず、更新差分とオフラインのtests/crc-polynomial/を確認する。
+10. compression.zstdを備えたPython 3.14以降を使い、スキルのルートで`python3 scripts/fetch_koopman.py`を実行するとオンラインで表を再生成する。最新HTMLとの照合は`--check`、保存HTMLとの照合は`--check --html-dir <保存先>`を付ける。再生成時の`--save-html-dir <保存先>`は原文をzstdのlevel 22・window_log 27で保存し、compression.jsonに生成環境・設定・SHA-256を記録する。取得・解析・件数・一致検査の失敗を成功扱いせず、更新差分とオフラインのtests/crc-polynomial/を確認する。

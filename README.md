@@ -18,6 +18,8 @@ AIエージェントと人間が使う規約、スキル、検査、依存の更
 
 このリポジトリを取得するときは、GitとPython 3.10以降を用意し、clone後に次を実行します。
 
+CRC引用データの生成・照合と`tests/crc-polynomial/`には、標準ライブラリの`compression.zstd`を備えたPython 3.14以降が必要です。
+
 ```sh
 git submodule update --init --depth 1
 ```
@@ -141,4 +143,6 @@ clone時に`git -c core.symlinks=true clone <repository-url>`を使い、開発�
 
 本リポジトリの規約、自作スキル、検査コードは[LICENSE](LICENSE)のBSD 3-Clause Licenseに従います。外部submoduleはそれぞれの利用条件に従い、ルートのLICENSEで一括して許諾されるわけではありません。上の一覧は固定版の表示であり、ライセンス不明の資材への許諾を意味しません。
 
-`crc-polynomial`の引用表と`tests/crc-polynomial/fixtures/`の原文HTML（gzip圧縮）は、[Philip Koopman, Carnegie Mellon UniversityのCRC資料](https://users.ece.cmu.edu/~koopman/crc/)に基づく[CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)のデータです。引用表には出典URL・取得日・著作権表示と、HTMLを表へ整形した変更内容を記載しています。原文の未確定値や表記異常は補正せず、採用前に公式サイトで再確認します。個別の重みデータファイルは同梱していません。
+`crc-polynomial`の引用表と`tests/crc-polynomial/fixtures/`の原文HTML（zstd圧縮）は、[Philip Koopman, Carnegie Mellon UniversityのCRC資料](https://users.ece.cmu.edu/~koopman/crc/)に基づく[CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)のデータです。引用表には出典URL・取得日・著作権表示と、HTMLを表へ整形した変更内容を記載しています。原文の未確定値や表記異常は補正せず、採用前に公式サイトで再確認します。個別の重みデータファイルは同梱していません。
+
+HTMLは生成器の`compression.zstd.compress`でlevel 22・window_log 27（ultra相当）、単一thread、checksum・content size付きで保存します。同じPython・libzstdと入力で決定的に生成し、`fixtures/compression.json`に生成時の版・設定・圧縮ファイルのSHA-256を記録します。原文のSHA-256は引用表の`references/sources.json`で照合します。第三者Pythonパッケージやzstd CLIは不要です。

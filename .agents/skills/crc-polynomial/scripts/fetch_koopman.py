@@ -2,7 +2,6 @@
 
 import argparse
 from datetime import date
-import gzip
 import hashlib
 from html import unescape
 from html.parser import HTMLParser
@@ -11,6 +10,11 @@ from pathlib import Path
 import re
 import sys
 from urllib.request import urlopen
+
+try:
+    from compression import zstd
+except ImportError:
+    zstd = None
 
 
 BASE = "https://users.ece.cmu.edu/~koopman/crc/"
@@ -21,6 +25,8 @@ HEX = r"0x[0-9a-fA-F]+"
 FORMS = re.compile(rf"\(({HEX});\s*({HEX})\)\s*<=>\s*\(({HEX});\s*({HEX})\)\s*(\{{[^{{}}]*\}})(.*)")
 NOTICE = "Copyright 2015-2018 Philip Koopman, Carnegie Mellon University, CC BY 4.0 (http://creativecommons.org/licenses/by/4.0/)"
 ROOT = Path(__file__).resolve().parents[1]
+ZSTD_OPTIONS = {"compression_level": 22, "window_log": 27, "nb_workers": 0,
+                "checksum_flag": 1, "content_size_flag": 1}
 PUBLISHED_ANOMALIES = {
     "hd3.html": {
         "(0x5b3ca4; xb67949)", "(0x306fe75; 0x60dfceb",
@@ -38,11 +44,43 @@ def plain(value):
     return " ".join(value.split())
 
 
+def require_zstd():
+    if zstd is None:
+        raise ValueError("CRC資料の処理にはcompression.zstdを備えたPython 3.14以降が必要です。Python環境を確認してください。")
+    return zstd
+
+
+def compress_saved(data):
+    codec = require_zstd()
+    return codec.compress(data, options={getattr(codec.CompressionParameter, key): value
+                                        for key, value in ZSTD_OPTIONS.items()})
+
+
+def save_snapshots(directory, sources):
+    codec = require_zstd()
+    directory.mkdir(parents=True, exist_ok=True)
+    files = {}
+    for name in sorted(sources):
+        value = sources[name]
+        compressed = compress_saved(value)
+        (directory / (name + ".zst")).write_bytes(compressed)
+        files[name + ".zst"] = hashlib.sha256(compressed).hexdigest()
+    manifest = {"format": "zstd", "python": sys.version.split()[0], "zstd": codec.zstd_version,
+                "options": ZSTD_OPTIONS, "files": files}
+    (directory / "compression.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+
+
 def read_saved(directory, name):
-    html, compressed = directory / name, directory / (name + ".gz")
+    html, compressed = directory / name, directory / (name + ".zst")
     if html.exists() and compressed.exists():
         raise ValueError(f"Ambiguous saved HTML: {name}")
-    return html.read_bytes() if html.exists() else gzip.decompress(compressed.read_bytes())
+    if html.exists():
+        return html.read_bytes()
+    codec = require_zstd()
+    try:
+        return codec.decompress(compressed.read_bytes())
+    except codec.ZstdError as error:
+        raise ValueError(f"保存HTMLのzstd展開に失敗しました: {name}: {error}") from error
 
 
 class Document(HTMLParser):
@@ -330,13 +368,14 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--html-dir", type=Path, help="Read saved HTML instead of using the network")
     parser.add_argument("--output", type=Path, default=ROOT / "references")
-    parser.add_argument("--save-html-dir", type=Path, help="Also save byte-preserving gzip HTML snapshots")
+    parser.add_argument("--save-html-dir", type=Path, help="Also save byte-preserving zstd level-22 HTML snapshots")
     parser.add_argument("--retrieved", help="Retrieval date YYYY-MM-DD; check defaults to the committed date")
     parser.add_argument("--check", action="store_true", help="Compare without writing")
     args = parser.parse_args(argv)
     if args.check and args.save_html_dir:
         parser.error("--check cannot write HTML snapshots")
     try:
+        require_zstd()
         retrieved = args.retrieved or (json.loads((args.output / "sources.json").read_text())["retrieved"]
                                         if args.check else date.today().isoformat())
         sources = {}
@@ -360,9 +399,7 @@ def main(argv=None):
             print(f"Exact match: {len(files)} reference files, {sum(counts.values())} table entries")
         else:
             if args.save_html_dir:
-                args.save_html_dir.mkdir(parents=True, exist_ok=True)
-                for name, value in sources.items():
-                    (args.save_html_dir / (name + ".gz")).write_bytes(gzip.compress(value, mtime=0))
+                save_snapshots(args.save_html_dir, sources)
             args.output.mkdir(parents=True, exist_ok=True)
             for name, value in files.items():
                 (args.output / name).write_text(value, encoding="utf-8")

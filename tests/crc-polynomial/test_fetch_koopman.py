@@ -2,6 +2,7 @@
 
 from contextlib import redirect_stdout, redirect_stderr
 import copy
+import hashlib
 from html import unescape
 import importlib.util
 import io
@@ -251,7 +252,7 @@ class KoopmanTest(unittest.TestCase):
                 self.assertEqual(1, self.cli(*args))
             self.assertEqual(before, {p.name: p.read_bytes() for p in Path(directory).iterdir()})
 
-    def test_saved_html_gzip_preserves_bytes_and_ambiguous_input_fails(self):
+    def test_saved_html_zstd_preserves_bytes_and_ambiguous_input_fails(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             self.assertEqual(0, self.cli("--html-dir", str(FIXTURES), "--output", str(root / "refs"),
@@ -261,10 +262,39 @@ class KoopmanTest(unittest.TestCase):
             (root / "crc3.html").write_bytes(self.sources["crc3.html"])
             with self.assertRaisesRegex(ValueError, "Ambiguous"):
                 CRC.read_saved(root, "crc3.html")
-            (root / "crc3.html.gz").unlink()
+            (root / "crc3.html.zst").unlink()
             self.assertEqual(self.sources["crc3.html"], CRC.read_saved(root, "crc3.html"))
             with self.assertRaises(SystemExit), redirect_stderr(io.StringIO()):
                 CRC.main(["--check", "--save-html-dir", directory])
+
+    def test_zstd_level22_determinism_and_committed_hashes(self):
+        manifest = json.loads((FIXTURES / "compression.json").read_text())
+        self.assertEqual("zstd", manifest["format"])
+        self.assertEqual(22, manifest["options"]["compression_level"])
+        self.assertEqual(27, manifest["options"]["window_log"])
+        self.assertEqual(CRC.ZSTD_OPTIONS, manifest["options"])
+        source_manifest = json.loads(self.files["sources.json"])["sources"]
+        for name, data in self.sources.items():
+            with self.subTest(source=name):
+                compressed = (FIXTURES / (name + ".zst")).read_bytes()
+                self.assertEqual(source_manifest[name]["sha256"], hashlib.sha256(data).hexdigest())
+                self.assertEqual(manifest["files"][name + ".zst"], hashlib.sha256(compressed).hexdigest())
+                self.assertEqual(CRC.compress_saved(data), CRC.compress_saved(data))
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            CRC.save_snapshots(root, self.sources)
+            before = (root / "compression.json").read_bytes()
+            CRC.save_snapshots(root, dict(reversed(list(self.sources.items()))))
+            self.assertEqual(before, (root / "compression.json").read_bytes())
+
+    def test_missing_zstd_and_corrupt_snapshot_fail_clearly(self):
+        with patch.object(CRC, "zstd", None), redirect_stderr(io.StringIO()) as stderr:
+            self.assertEqual(1, CRC.main(["--check"]))
+            self.assertIn("compression.zstdを備えたPython 3.14以降が必要です", stderr.getvalue())
+        with tempfile.TemporaryDirectory() as directory:
+            (Path(directory) / "crc3.html.zst").write_bytes(b"not a zstd frame")
+            with self.assertRaisesRegex(ValueError, "zstd展開に失敗"):
+                CRC.read_saved(Path(directory), "crc3.html")
 
 
 if __name__ == "__main__":
