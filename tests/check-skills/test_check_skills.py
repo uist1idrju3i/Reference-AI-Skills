@@ -146,6 +146,18 @@ class SkillsTest(unittest.TestCase):
                 self.assertEqual([], CHECK.metadata(f'---\nname: "{value}"\ndescription: "{value}"\n---\n', value))
                 self.assertEqual([], CHECK.metadata(f"---\nname: '{value}'\ndescription: '{value}'\n---\n", value))
 
+    def test_radix_prefixes_only_consume_digits_of_their_base(self):
+        for value in ('0bad', '0o9', '0x1G'):
+            with self.subTest(value=value):
+                self.write_skill(self.content.replace('Example skill', value))
+                self.assertEqual([], self.errors())
+                self.assertEqual([], CHECK.metadata(f'---\nname: {value}\ndescription: {value}\n---\n', value))
+        for value in ('0b101', '0o17', '0x1F'):
+            with self.subTest(value=value):
+                self.write_skill(self.content.replace('Example skill', value))
+                self.assertTrue(self.errors())
+                self.assertTrue(CHECK.metadata(f'---\nname: {value}\ndescription: valid\n---\n', value))
+
     def test_kebab_case(self):
         self.skill.rename(self.skill.with_name("Bad_name"))
         self.assertTrue(self.errors())
