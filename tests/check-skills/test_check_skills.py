@@ -135,6 +135,17 @@ class SkillsTest(unittest.TestCase):
                 self.write_skill(self.content.replace("Example skill", value))
                 self.assertTrue(self.errors())
 
+    def test_unquoted_yaml_numbers_booleans_and_nulls(self):
+        for value in ('123', '0', '-42', '+12', '1.5', '.5', '12.', '1e3', '-2e-4',
+                      '1_000', '0xFF', '0o77', '0b10', '0123', '.inf', '-.Inf', '.NaN',
+                      '1:20', 'true', 'FALSE', 'yes', 'No', 'on', 'OFF', 'null', 'NULL', '~'):
+            with self.subTest(value=value):
+                self.write_skill(self.content.replace('Example skill', value))
+                self.assertTrue(self.errors())
+                self.assertTrue(CHECK.metadata(f'---\nname: {value}\ndescription: valid\n---\n', value))
+                self.assertEqual([], CHECK.metadata(f'---\nname: "{value}"\ndescription: "{value}"\n---\n', value))
+                self.assertEqual([], CHECK.metadata(f"---\nname: '{value}'\ndescription: '{value}'\n---\n", value))
+
     def test_kebab_case(self):
         self.skill.rename(self.skill.with_name("Bad_name"))
         self.assertTrue(self.errors())

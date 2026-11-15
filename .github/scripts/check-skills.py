@@ -14,6 +14,9 @@ from vendor_revisions import verify_revisions
 
 
 NAME = r"[a-z0-9]+(?:-[a-z0-9]+)*"
+YAML_NUMBER = re.compile(
+    r"[-+]?(?:0[box][0-9a-f_]+|(?:\d[\d_]*(?:\.[\d_]*)?|\.[\d_]+)(?:e[-+]?\d+)?"
+    r"|\.(?:inf|nan)|\d[\d_]*(?::[0-5]?\d)+(?:\.[\d_]*)?)", re.IGNORECASE)
 
 
 def scalar(value: str, continuation: list[str]) -> str:
@@ -34,7 +37,8 @@ def scalar(value: str, continuation: list[str]) -> str:
     value = re.split(r"\s+#", value, maxsplit=1)[0].strip()
     if re.fullmatch(r"[>|][+-]?", value):
         return " ".join(line.strip() for line in continuation).strip()
-    if value.lower() in ("null", "~", "true", "false") or value.startswith(("[", "{")):
+    if (value.lower() in ("null", "~", "true", "false", "yes", "no", "on", "off")
+            or YAML_NUMBER.fullmatch(value) or value.startswith(("[", "{"))):
         raise ValueError("文字列ではありません")
     return value
 
