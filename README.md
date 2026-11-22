@@ -59,6 +59,7 @@ tests/                          検査器・通知処理・CRC引用データの
 | [`session-retrospective`](.agents/skills/session-retrospective/SKILL.md) | 自作 | 本リポジトリ | BSD-3-Clause | セッション全体を振り返り改善を提案する |
 | [`template-adoption`](.agents/skills/template-adoption/SKILL.md) | 自作 | 本リポジトリ | BSD-3-Clause | 深い計画と承認を経て別のリポジトリへ導入する |
 | [`crc-polynomial`](.agents/skills/crc-polynomial/SKILL.md) | 自作 | 本リポジトリ | BSD-3-Clause、引用データはCC BY 4.0 | Koopmanの原文でデータ長・HD・誤りモデルに合うCRCを選ぶ |
+| [`mruby-idiomatic`](.agents/skills/mruby-idiomatic/SKILL.md) | 自作 | 本リポジトリ | BSD-3-Clause | mruby/c向けの製品Ruby・サンプル・文書のコード例を書き、実測した可否と代替を確認する |
 | [`grill-with-docs`](.agents/skills/grill-with-docs/SKILL.md) | 外部 | mattpocock/skills v1.3.2 | MIT | 質問で計画と用語を詰める |
 | [`grilling`](.agents/skills/grilling/SKILL.md) | 外部 | mattpocock/skills v1.3.2 | MIT | 計画の前提と判断を問い直す |
 | [`domain-modeling`](.agents/skills/domain-modeling/SKILL.md) | 外部 | mattpocock/skills v1.3.2 | MIT | 用語と概念の境界を整理する |

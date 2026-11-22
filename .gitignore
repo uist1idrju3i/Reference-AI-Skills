@@ -3,3 +3,5 @@ CLAUDE.local.md
 AGENTS.override.md
 .yomiyasu/
 __pycache__/
+.toolchains/
+results/
