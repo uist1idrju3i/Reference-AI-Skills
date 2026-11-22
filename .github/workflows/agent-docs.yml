@@ -32,6 +32,10 @@ jobs:
           python3 .github/scripts/check-skills.py
           python3 -m unittest discover -s tests/check-skills
           python3 -m unittest discover -s tests/crc-polynomial
+      - name: Test mruby idiom probe runner without Ruby toolchain
+        run: python3 -m unittest discover -s tests/mruby-idiomatic
+      - name: Test GPIO example runner without Ruby toolchain
+        run: python3 -m unittest discover -s tests/mruby-common-io-api-guidelines
 
   wiki:
     runs-on: ubuntu-26.04
