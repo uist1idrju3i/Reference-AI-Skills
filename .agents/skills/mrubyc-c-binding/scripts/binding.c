@@ -188,13 +188,15 @@ static void save_block(mrbc_vm *vm, mrbc_value v[], int argc)
 
 static void saved_block(mrbc_vm *vm, mrbc_value v[], int argc)
 {
+  assert(mrbc_type(saved) == MRBC_TT_NIL || mrbc_type(saved) == MRBC_TT_PROC);
   mrbc_incref(&saved);
   SET_RETURN(saved);
 }
 
 static void clear_block(mrbc_vm *vm, mrbc_value v[], int argc)
 {
-  mrbc_decref_empty(&saved);
+  mrbc_decref(&saved);
+  saved = mrbc_nil_value();
   SET_NIL_RETURN();
 }
 
