@@ -66,8 +66,8 @@ pinは0〜7のInteger、1 pin 1bit、初期levelは0です。方向とpullの排
 スキルのrootで、未使用の保存先を指定します。ソースは一時コピーにしてPOSIX HALでbuildし、原本を変更しません。
 
 ```sh
-python3 scripts/gpio-example/run.py \\
-  --mrubyc "$MRUBYC_SOURCE" --mrbc "$MRBC" \\
+python3 scripts/gpio-example/run.py \
+  --mrubyc "$MRUBYC_SOURCE" --mrbc "$MRBC" \
   --out "$RESULTS_DIR/gpio-release4.0.0" --repeat 5
 ```
 
