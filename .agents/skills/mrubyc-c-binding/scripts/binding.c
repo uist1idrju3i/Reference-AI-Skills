@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include "mrubyc.h"
 
+void value_contract_init(mrbc_class *binding);
+
 #ifdef NDEBUG
 #error "binding contract requires enabled assertions"
 #endif
@@ -10,6 +12,7 @@ static mrbc_value saved;
 static mrbc_class *error_class;
 static mrbc_class *data_class;
 static int destructor_calls, after_raise, detected, guarded_side_effects;
+static int keyword_side_effects;
 
 static void destroy_data(mrbc_value *value)
 {
@@ -172,6 +175,26 @@ static void dict(mrbc_vm *vm, mrbc_value v[], int argc)
   MRBC_KW_DELETE(required);
 }
 
+static void keyword_guard(mrbc_vm *vm, mrbc_value v[], int argc)
+{
+  MRBC_KW_ARG(mode);
+  if (!MRBC_KW_MANDATORY(mode)) goto RETURN;
+  if (!MRBC_KW_END()) goto RETURN;
+  if (mrbc_type(mode) != MRBC_TT_SYMBOL) {
+    mrbc_raise(vm, MRBC_CLASS(TypeError), "mode must be Symbol");
+    goto RETURN;
+  }
+  keyword_side_effects++;
+  SET_TRUE_RETURN();
+RETURN:
+  MRBC_KW_DELETE(mode);
+}
+
+static void keyword_effects(mrbc_vm *vm, mrbc_value v[], int argc)
+{
+  SET_INT_RETURN(keyword_side_effects);
+}
+
 static void save_block(mrbc_vm *vm, mrbc_value v[], int argc)
 {
   int index = argc + 1 + (mrbc_type(v[argc + 1]) == MRBC_TT_HASH);
@@ -268,6 +291,8 @@ void binding_contract_init(void)
   mrbc_define_method(NULL, cls, "ownership", ownership);
   mrbc_define_method(NULL, cls, "layout", layout);
   mrbc_define_method(NULL, cls, "keyword", keyword);
+  mrbc_define_method(NULL, cls, "keyword_guard", keyword_guard);
+  mrbc_define_method(NULL, cls, "keyword_effects", keyword_effects);
   mrbc_define_method(NULL, cls, "dict", dict);
   mrbc_define_method(NULL, cls, "save_block", save_block);
   mrbc_define_method(NULL, cls, "saved", saved_block);
@@ -279,4 +304,5 @@ void binding_contract_init(void)
   mrbc_define_method(NULL, cls, "numeric", numeric);
   mrbc_define_method(NULL, cls, "guarded", guarded);
   mrbc_define_method(NULL, cls, "guarded_count", guarded_count);
+  value_contract_init(cls);
 }

@@ -73,7 +73,7 @@ def main():
     if not (source / "src/vm_config.h").is_file() or not mrbc.is_file():
         parser.error("invalid source or mrbc")
     out.mkdir(parents=True)
-    inputs = [here / name for name in ("binding.c", "contract.rb", "run.py", "expected.json")]
+    inputs = [here / name for name in ("binding.c", "value_contract.c", "contract.rb", "run.py", "expected.json")]
     inputs.append(Path(probe.__file__).resolve())
     metadata = {"repeat": args.repeat, "commands": [], "build_flags": probe.CFLAGS,
                 "input_sha256": {str(p.relative_to(here)) if p.is_relative_to(here) else "probe_mrubyc.py":
@@ -121,7 +121,7 @@ def main():
             executable = work / "runner"
             checked("build-runner", ["cc", "-Wall", "-Wextra", "-Wno-unused-parameter", "-g", "-O0",
                                      "-I" + str(copied / "src"), "-I" + str(copied / "hal/posix"),
-                                     str(harness), str(here / "binding.c"),
+                                     str(harness), str(here / "binding.c"), str(here / "value_contract.c"),
                                      str(copied / "build/libmrubyc.a"), "-lm", "-o", str(executable)])
             metadata["vm_config"] = json.loads(checked("vm-config", [str(executable), "--config"]))
             for index in range(1, args.repeat + 1):

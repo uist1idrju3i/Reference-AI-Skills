@@ -49,6 +49,28 @@ class ResultTests(unittest.TestCase):
         run["run"]["stderr"] = "Exception"
         self.assertEqual(RUNNER.classify_run(run, EXPECTED)[0], "FAIL")
 
+    def test_keyword_guard_evidence_is_required(self):
+        checks = ["PASS keyword guard " + suffix for suffix in (
+            "missing rescued", "missing no side effects",
+            "unknown rescued", "unknown no side effects",
+            "wrong type rescued", "wrong type no side effects",
+            "normal", "normal one side effect")]
+        for line in checks:
+            with self.subTest(line=line):
+                self.assertIn(line, EXPECTED)
+                incomplete = [item for item in EXPECTED if item != line]
+                self.assertEqual(RUNNER.classify_run(good_run(incomplete), EXPECTED)[0], "FAIL")
+
+    def test_public_value_type_evidence_is_required(self):
+        names = ("nil", "false", "true", "Integer", "Float", "Symbol", "Class", "Module",
+                 "Object", "Proc", "Array", "String", "Range", "Hash", "Exception")
+        for name in names:
+            line = "PASS typed " + name + " contract"
+            with self.subTest(name=name):
+                self.assertIn(line, EXPECTED)
+                incomplete = [item for item in EXPECTED if item != line]
+                self.assertEqual(RUNNER.classify_run(good_run(incomplete), EXPECTED)[0], "FAIL")
+
     def test_crash_even_with_all_pass_markers_fails(self):
         run = good_run()
         run["run"]["exit_code"] = -11
@@ -104,7 +126,7 @@ class ResultTests(unittest.TestCase):
 
     def test_expected_fixture_and_docs_stay_in_sync(self):
         fixture = (SKILL / "scripts/contract.rb").read_text()
-        binding = (SKILL / "scripts/binding.c").read_text()
+        binding = "\n".join(path.read_text() for path in (SKILL / "scripts").glob("*.c"))
         for line in EXPECTED:
             if line == "PASS ALL binding-contract":
                 self.assertIn(line, fixture)

@@ -10,8 +10,8 @@ description: mruby/cにCのclass・methodを追加し、CからVMを扱う実装
 1. mruby/cのcommit、mrbc、HAL、vm_configを記録します。[API契約表](references/api.md)はrelease4.0.0を対象とし、masterとの差分を分けています。mruby/CRubyのAPIをそのまま使えると仮定しません。
 2. Ruby側のmethod、入力、空・未設定、出力、例外、副作用、資源のownerを先に決めます。Rubyで書ける制御はRubyへ置き、[mruby-idiomatic](../mruby-idiomatic/SKILL.md)に従います。Cは短い検査・native操作・値変換に絞ります。
 3. 初期化、登録、task開始の順序を決めます。[登録とreceiver](references/api.md#登録とreceiver)でclass/instanceの境界を確認し、receiverの型とidentityも検査します。
-4. [引数](references/api.md#引数)の位置を確認します。argc、kwargs、block、型、範囲をcastや副作用より前に検査します。省略とnilを分け、keywordのcleanupを成功・失敗の両経路に置きます。
-5. 値ごとにownerを記録し、[所有権表](references/api.md#戻り値と所有権)でretain・移譲・借用を確かめます。`SET_RETURN`は古いselfをreleaseします。同じobjectを返す場合は返却分を先にretainし、移譲後に二度releaseしません。
+4. [引数](references/api.md#引数)の位置を確認し、argc→型→中身・範囲→C型への変換→副作用の順を守ります。省略とnilを分け、失敗経路は後始末だけを通ってreturnします。[型別の検査](references/api.md#型ごとの受け渡し)とbeta helperの例外も確認します。
+5. 値ごとにownerを記録し、[所有権表](references/api.md#戻り値と所有権)でretain・移譲・借用を確かめます。containerの全要素を先に検査し、作りかけは失敗時に解放します。self返却は先にretainし、移譲後に二度releaseしません。
 6. [例外](references/api.md#例外とcからの呼出し)を設定したら、必要な後始末をしてreturnします。raiseがCの後続処理を止めると思わず、失敗後のdriver操作や成功値の設定を防ぎます。
 7. Cから任意のRuby methodやblockを同期呼出しできると仮定しません。[mrbc_sendの制限](references/api.md#例外とcからの呼出し)を確認し、Ruby wrapperで開始・poll・block呼出し・ensureを組み立てます。
 8. [taskとHAL](references/api.md#taskとhal)を確認し、長い処理は短い段階へ分けます。C callbackは有限時間で戻し、ISR/他threadの通知は同期した固定容量queueへ渡してforegroundで処理します。

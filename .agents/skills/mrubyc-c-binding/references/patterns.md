@@ -10,6 +10,11 @@
 | 長い処理 | ADCのstart/poll/finish、lease、identity検査とRuby wrapperのsleep/ensure。[lease][BLEASE]・[wrapper][BADCWRAP] | Ruby slotがreload要求を見て終了する。[slot][OSLOT1] | native処理は短くし、取消し後や古いrequestの再利用を契約化する |
 | event配送 | bounded queue、coalescing、overflow counterをforegroundで回収。lockはruntime wrapper側。[queue][BEVENT]・[IRQ保護][BEVENTIRQ]・[service][BSERVICE] | HALがidle/output等をportへ接続。[HAL][OHAL]・[output][OWRITE] | VM値をISRで作らず、通知queueの容量・同期・overflow方針を決める |
 | reload | lease解除等の明示的なservice処理を持つ。[service][BSERVICE] | run終了後にtimer停止、API状態の初期化、cleanupを行い、外側loopでpool/bytecodeを用意して再初期化・再登録する。[reload][ORELOAD]・[VM loop][OVM] | 実行中bufferの上書きではなく、全利用者停止と資源整理を先に行う |
+| Symbolの対応 | GPIOはIntegerの範囲、Stringのpin表記、Symbolのbackend label lookupを分けて扱う。[pin変換][BPIN] | led1/led2/led3、sw1〜sw4を登録してID表に保持。LED側は対応IDをGPIO出力へ結び付ける。[Symbol表][OSYMBOL]・[写像][OLEDMAP] | 文字列をその都度解釈せず、許可Symbol集合とnative対象の対応を契約にする |
+| boolの受渡し | 引数・例外・owned/borrowedの境界を共通helperに置く。[helper][BNATIVE] | TRUE/FALSEのtagからC boolへ変換する専用helperを使う。[bool][OBOOL] | strict boolとRubyのtruthinessを区別し、受理する値を決める |
+| 数値と範囲 | 共有helperでInteger型とstatusを扱う。[helper][BNATIVE] | PWM bindingは数値を周波数・dutyのC引数へ渡し、driver側はduty上限100を確認する。[binding][OPWM]・[driver][OPWMDRV] | Ruby側の単位・出力C型・物理範囲を分けて表す。採用先ではcast前の検査を契約化する |
+| Array / String | 値の返却はowned/borrowed helperで区別。[helper][BNATIVE] | sampleはStringの長さ・終端と固定buffer、Arrayの要素数・要素読出しを使う。別sampleはFloat配列を生成して返す。[入力例][OVALUEIN]・[生成例][OVALUEOUT] | 長さ、要素型、byte/文字、NUL、コピーと借用の寿命を個別に決める |
+| keywordと戻り値 | temperatureはbackendより前にkeyword終了を検査。[修正版][BFIXKW] | LEDはpart/stateをkeywordとして受け取りboolを返す。I2C readはstatusとdataを並べたArrayを返す。[keyword][OLED]・[I2C][OI2C] | keyword名・default・戻り値のshapeをRuby契約へ記載する。後始末の一般形は[API契約表](api.md#keywordの失敗経路と後始末)に従う |
 
 ## 履歴からの確認項目
 
@@ -43,3 +48,11 @@ owned/borrowed helperとADC leaseの導入も履歴で確認できます。全�
 [BHISTLEASE]: https://github.com/uist1idrju3i/RBOS/blob/1f815eb981e85b28f4ba391d9775575a1abf57ac/src/rbos/adc_binding.c#L71-L103
 [BLICENSE]: https://github.com/uist1idrju3i/RBOS/blob/bce986210380785fc89474f53c3b4e80ea9aed33/LICENSE#L1-L28
 [OLICENSE]: https://github.com/OpenBlink/openblink-demo-mdbt50q-db-40/blob/d6efc07877ebac6bd55519b8458be4629bef80c3/LICENSE#L1-L28
+[OSYMBOL]: https://github.com/OpenBlink/openblink-demo-mdbt50q-db-40/blob/d6efc07877ebac6bd55519b8458be4629bef80c3/src/api/symbol.c#L18-L93
+[BPIN]: https://github.com/uist1idrju3i/RBOS/blob/bce986210380785fc89474f53c3b4e80ea9aed33/src/rbos/gpio_binding.c#L20-L51
+[OLEDMAP]: https://github.com/OpenBlink/openblink-demo-mdbt50q-db-40/blob/d6efc07877ebac6bd55519b8458be4629bef80c3/src/api/led.c#L78-L94
+[OBOOL]: https://github.com/OpenBlink/openblink-demo-mdbt50q-db-40/blob/d6efc07877ebac6bd55519b8458be4629bef80c3/src/api/api.c#L22-L37
+[OPWM]: https://github.com/OpenBlink/openblink-demo-mdbt50q-db-40/blob/d6efc07877ebac6bd55519b8458be4629bef80c3/src/api/pwm.c#L39-L54
+[OPWMDRV]: https://github.com/OpenBlink/openblink-demo-mdbt50q-db-40/blob/d6efc07877ebac6bd55519b8458be4629bef80c3/src/drv/pwm.c#L25-L48
+[OVALUEIN]: https://github.com/OpenBlink/openblink-demo-mdbt50q-db-40/blob/d6efc07877ebac6bd55519b8458be4629bef80c3/src/api/blink.c#L80-L137
+[OVALUEOUT]: https://github.com/OpenBlink/openblink-demo-mdbt50q-db-40/blob/d6efc07877ebac6bd55519b8458be4629bef80c3/src/api/blink.c#L139-L156
