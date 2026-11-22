@@ -36,6 +36,8 @@ jobs:
         run: python3 -m unittest discover -s tests/mruby-idiomatic
       - name: Test GPIO example runner without Ruby toolchain
         run: python3 -m unittest discover -s tests/mruby-common-io-api-guidelines
+      - name: Test C binding runner without Ruby toolchain
+        run: python3 -m unittest discover -s tests/mrubyc-c-binding
 
   wiki:
     runs-on: ubuntu-26.04
